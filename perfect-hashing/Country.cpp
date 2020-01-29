@@ -1,7 +1,22 @@
 #include "Country.h"
 
+Country::Country() : population(0), hdi(0)
+{
+}
+
 Country::Country(std::string name, std::string capital, int population, double hdi) : name(name), capital(capital), population(population), hdi(hdi)
 {
+}
+
+Country& Country::operator=(const Country& country)
+{
+	if (this != &country) {
+		name = country.name;
+		capital = country.capital;
+		population = country.population;
+		hdi = country.hdi;
+	}
+	return *this;
 }
 
 std::ostream& operator<<(std::ostream& out, const Country& country)
