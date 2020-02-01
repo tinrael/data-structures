@@ -8,7 +8,7 @@ class HashTable
 {
 private:
 	T** table;
-	size_t size;
+	std::size_t size;
 
 	HashFunction hashFunction;
 
