@@ -17,3 +17,8 @@ unsigned HashFunction::getHashValue(std::string key)
 {
 	return 0;
 }
+
+unsigned HashFunction::getHashValue(unsigned key)
+{
+	return ((a * key + b) % p) % m;
+}
