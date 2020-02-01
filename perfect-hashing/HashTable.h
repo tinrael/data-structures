@@ -7,7 +7,7 @@ template <typename T>
 class HashTable
 {
 private:
-	T* table;
+	T** table;
 	size_t size;
 
 	HashFunction hashFunction;
@@ -18,9 +18,9 @@ public:
 };
 
 template<typename T>
-inline HashTable<T>::HashTable(std::size_t size) : size(size), hashFunction(size)
+inline HashTable<T>::HashTable(std::size_t size) : table(new T*[size]()), size(size), hashFunction(size)
 {
-	table = new T[size];
+	
 }
 
 template<typename T>
