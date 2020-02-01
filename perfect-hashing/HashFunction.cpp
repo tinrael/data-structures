@@ -5,11 +5,11 @@ HashFunction::HashFunction(unsigned m) : m(m)
 {
 	std::random_device rd;
 	std::mt19937 generator(rd());
-	std::uniform_int_distribution<unsigned> dis1(1, p - 1);
-	std::uniform_int_distribution<unsigned> dis2(0, p - 1);
+	std::uniform_int_distribution<unsigned> disA(1, p - 1);
+	std::uniform_int_distribution<unsigned> disB(0, p - 1);
 
-	a = dis1(generator);
-	b = dis2(generator);
+	a = disA(generator);
+	b = disB(generator);
 }
 
 // TODO: Add hash function from universal class of hash functions here.
