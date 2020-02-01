@@ -152,10 +152,12 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Country.cpp" />
+    <ClCompile Include="HashFunction.cpp" />
     <ClCompile Include="perfect-hashing.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Country.h" />
+    <ClInclude Include="HashFunction.h" />
     <ClInclude Include="HashTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
