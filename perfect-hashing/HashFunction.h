@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <cstddef>
 
 class HashFunction
 {
@@ -9,11 +10,11 @@ public:
 
 	unsigned a; // the random in [1, p - 1]
 	unsigned b; // the random in [0, p - 1]
-	unsigned m;
+	std::size_t m;
 
 public:
-	HashFunction(unsigned m);
+	HashFunction(std::size_t m);
 
-	unsigned getHashValue(std::string key);
-	unsigned getHashValue(unsigned key);
+	std::size_t getHashValue(std::string key);
+	std::size_t getHashValue(unsigned key);
 };
