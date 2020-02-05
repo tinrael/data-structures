@@ -40,7 +40,7 @@ inline HashTable<T, U>::~HashTable()
 template<typename T, typename U>
 inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
 {
-	if (!data) {
+	if (!slot->getData()) {
 		throw std::invalid_argument("nullptr data argument");
 	}
 	std::size_t index = hashFunction.getHashValue(slot->getKey());
