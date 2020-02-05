@@ -4,6 +4,7 @@
 #include "HashFunction.h"
 #include <cstddef>
 #include <stdexcept>
+#include <vector>
 
 template<typename T, typename U>
 class HashTable
@@ -18,6 +19,7 @@ public:
 	HashTable(std::size_t size);
 	~HashTable();
 
+	bool insert(std::vector<HashTableSlot<T, U>*> slots);
 	bool insert(HashTableSlot<T, U> *slot);
 	U* search(T key);
 };
@@ -39,6 +41,18 @@ inline HashTable<T, U>::~HashTable()
 		delete table[i];
 	}
 	delete[] table;
+}
+
+template<typename T, typename U>
+inline bool HashTable<T, U>::insert(std::vector<HashTableSlot<T, U>*> slots)
+{
+	bool isCollide = false;
+	for (HashTableSlot<T, U> *slot : slots) {
+		if (!insert(slot)) {
+			isCollide = true;
+		}
+	}
+	return isCollide;
 }
 
 template<typename T, typename U>
