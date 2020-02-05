@@ -25,12 +25,12 @@ public:
 };
 
 template<typename T, typename U>
-inline HashTable<T, U>::HashTable(std::size_t size) :
-	table(new HashTableSlot<T, U>*[size]()), 
-	size(size), 
-	hashFunction(size)
+inline HashTable<T, U>::HashTable(std::size_t size) : size(size), hashFunction(size)
 {
-	
+	if (this->size == 0) {
+		throw std::invalid_argument("The size of the hash table cannot be zero.");
+	}
+	table = new HashTableSlot<T, U>*[size]();
 }
 
 // TODO: Use smart pointers
