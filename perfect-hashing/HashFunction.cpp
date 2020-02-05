@@ -1,8 +1,15 @@
 #include <random>
+#include <stdexcept>
 #include "HashFunction.h"
 
-HashFunction::HashFunction(std::size_t m) : m(m)
+HashFunction::HashFunction(std::size_t m)
 {
+	if (m == 0) {
+		throw std::invalid_argument("The m value cannot be zero.");
+	}
+	
+	this->m = m;
+
 	std::random_device rd;
 	std::mt19937 generator(rd());
 	std::uniform_int_distribution<unsigned> disA(1, p - 1);
