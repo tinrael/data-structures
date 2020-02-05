@@ -1,5 +1,6 @@
 #pragma once
 
+#include "HashTableSlot.h"
 #include "HashFunction.h"
 #include <cstddef>
 #include <stdexcept>
@@ -8,7 +9,7 @@ template<typename T, typename U>
 class HashTable
 {
 private:
-	U** table;
+	HashTableSlot<T, U> **table;
 	std::size_t size;
 
 	HashFunction hashFunction;
@@ -21,7 +22,7 @@ public:
 };
 
 template<typename T, typename U>
-inline HashTable<T, U>::HashTable(std::size_t size) : table(new U*[size]()), size(size), hashFunction(size)
+inline HashTable<T, U>::HashTable(std::size_t size) : table(new HashTableSlot<T, U>*[size]()), size(size), hashFunction(size)
 {
 	
 }
