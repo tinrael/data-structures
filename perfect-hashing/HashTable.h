@@ -23,7 +23,10 @@ public:
 };
 
 template<typename T, typename U>
-inline HashTable<T, U>::HashTable(std::size_t size) : table(new HashTableSlot<T, U>*[size]()), size(size), hashFunction(size)
+inline HashTable<T, U>::HashTable(std::size_t size) : 
+	table(new HashTableSlot<T, U>*[size]()), 
+	size(size), 
+	hashFunction(size)
 {
 	
 }
@@ -40,10 +43,10 @@ inline HashTable<T, U>::~HashTable()
 template<typename T, typename U>
 inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
 {
-	if (!slot->getData()) {
-		throw std::invalid_argument("nullptr data argument");
+	if (!slot || !slot->getData()) {
+		throw std::invalid_argument("The slot argument is incorrect.");
 	}
-	std::size_t index = hashFunction.getHashValue(slot->getKey());
+	unsigned index = hashFunction.getHashValue(slot->getKey());
 	if (!table[index]) {
 		table[index] = slot;
 		return true;
