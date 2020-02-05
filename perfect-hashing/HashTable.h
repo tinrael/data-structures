@@ -58,11 +58,9 @@ inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
 template<typename T, typename U>
 inline U* HashTable<T, U>::search(T key)
 {
-	std::size_t index = hashFunction.getHashValue(key);
-	if (table[index]) {
-		if (table[index]->getKey() == key) {
-			return table[index]->getData();
-		}
+	unsigned index = hashFunction.getHashValue(key);
+	if (table[index] && (table[index]->getKey() == key)) {
+		return table[index]->getData();
 	}
 	return nullptr;
 }
