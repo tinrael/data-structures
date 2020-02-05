@@ -31,6 +31,7 @@ inline HashTable<T, U>::HashTable(std::size_t size) :
 	
 }
 
+// TODO: Use smart pointers
 template<typename T, typename U>
 inline HashTable<T, U>::~HashTable()
 {

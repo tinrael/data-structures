@@ -20,6 +20,7 @@ inline HashTableSlot<T, U>::HashTableSlot(T key, U *data) : key(key), data(data)
 {
 }
 
+// TODO: Use smart pointers
 template<typename T, typename U>
 inline HashTableSlot<T, U>::~HashTableSlot()
 {
