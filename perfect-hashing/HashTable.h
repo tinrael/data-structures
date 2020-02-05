@@ -19,6 +19,7 @@ public:
 	~HashTable();
 
 	bool insert(HashTableSlot<T, U>* slot);
+	U* search(T key);
 };
 
 template<typename T, typename U>
@@ -48,4 +49,16 @@ inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
 		return true;
 	}
 	return false;
+}
+
+template<typename T, typename U>
+inline U* HashTable<T, U>::search(T key)
+{
+	std::size_t index = hashFunction.getHashValue(key);
+	if (table[index]) {
+		if (table[index]->getKey() == key) {
+			return table[index]->getData();
+		}
+	}
+	return nullptr;
 }
