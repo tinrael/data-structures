@@ -4,7 +4,11 @@ Country::Country() : population(0), hdi(0)
 {
 }
 
-Country::Country(std::string name, std::string capital, int population, double hdi) : name(name), capital(capital), population(population), hdi(hdi)
+Country::Country(std::string name, std::string capital, unsigned population, double hdi) : 
+	name(name), 
+	capital(capital), 
+	population(population), 
+	hdi(hdi)
 {
 }
 

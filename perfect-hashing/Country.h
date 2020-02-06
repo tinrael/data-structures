@@ -8,12 +8,12 @@ class Country
 private:
 	std::string name;
 	std::string capital;
-	int population;
+	unsigned population;
 	double hdi; // The Human Development Index
 
 public:
 	Country();
-	Country(std::string name, std::string capital, int population, double hdi);
+	Country(std::string name, std::string capital, unsigned population, double hdi);
 
 	Country& operator= (const Country& country);
 
