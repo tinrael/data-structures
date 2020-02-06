@@ -20,7 +20,7 @@ inline HashTableSlot<KeyType, DataType>::HashTableSlot(KeyType key, DataType *da
 {
 }
 
-// TODO: Use smart pointers
+// TODO: Use smart pointers. Are you sure to delete data?
 template<typename KeyType, typename DataType>
 inline HashTableSlot<KeyType, DataType>::~HashTableSlot()
 {
