@@ -6,11 +6,11 @@
 #include <stdexcept>
 #include <vector>
 
-template<typename T, typename U>
+template<typename KeyType, typename DataType>
 class HashTable
 {
 private:
-	HashTableSlot<T, U> **table;
+	HashTableSlot<KeyType, DataType> **table;
 	std::size_t size;
 
 	HashFunction hashFunction;
@@ -19,23 +19,23 @@ public:
 	HashTable(std::size_t size);
 	~HashTable();
 
-	bool insert(std::vector<HashTableSlot<T, U>*> slots);
-	bool insert(HashTableSlot<T, U> *slot);
-	U* search(T key);
+	bool insert(std::vector<HashTableSlot<KeyType, DataType>*> slots);
+	bool insert(HashTableSlot<KeyType, DataType> *slot);
+	DataType* search(KeyType key);
 };
 
-template<typename T, typename U>
-inline HashTable<T, U>::HashTable(std::size_t size) : size(size), hashFunction(size)
+template<typename KeyType, typename DataType>
+inline HashTable<KeyType, DataType>::HashTable(std::size_t size) : size(size), hashFunction(size)
 {
 	if (this->size == 0) {
 		throw std::invalid_argument("The size of the hash table cannot be zero.");
 	}
-	table = new HashTableSlot<T, U>*[size]();
+	table = new HashTableSlot<KeyType, DataType>*[size]();
 }
 
 // TODO: Use smart pointers
-template<typename T, typename U>
-inline HashTable<T, U>::~HashTable()
+template<typename KeyType, typename DataType>
+inline HashTable<KeyType, DataType>::~HashTable()
 {
 	for (std::size_t i = 0; i < size; i++) {
 		delete table[i];
@@ -43,11 +43,11 @@ inline HashTable<T, U>::~HashTable()
 	delete[] table;
 }
 
-template<typename T, typename U>
-inline bool HashTable<T, U>::insert(std::vector<HashTableSlot<T, U>*> slots)
+template<typename KeyType, typename DataType>
+inline bool HashTable<KeyType, DataType>::insert(std::vector<HashTableSlot<KeyType, DataType>*> slots)
 {
 	bool isCollide = false;
-	for (HashTableSlot<T, U> *slot : slots) {
+	for (HashTableSlot<KeyType, DataType> *slot : slots) {
 		if (!insert(slot)) {
 			isCollide = true;
 		}
@@ -55,8 +55,8 @@ inline bool HashTable<T, U>::insert(std::vector<HashTableSlot<T, U>*> slots)
 	return isCollide;
 }
 
-template<typename T, typename U>
-inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
+template<typename KeyType, typename DataType>
+inline bool HashTable<KeyType, DataType>::insert(HashTableSlot<KeyType, DataType> *slot)
 {
 	if (!slot || !slot->getData()) {
 		throw std::invalid_argument("The slot argument is incorrect.");
@@ -69,8 +69,8 @@ inline bool HashTable<T, U>::insert(HashTableSlot<T, U> *slot)
 	return false;
 }
 
-template<typename T, typename U>
-inline U* HashTable<T, U>::search(T key)
+template<typename KeyType, typename DataType>
+inline DataType* HashTable<KeyType, DataType>::search(KeyType key)
 {
 	std::size_t index = hashFunction.getHashValue(key);
 	if (table[index] && (table[index]->getKey() == key)) {

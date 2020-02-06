@@ -1,40 +1,40 @@
 #pragma once
 
-template<typename T, typename U>
+template<typename KeyType, typename DataType>
 class HashTableSlot
 {
 private:
-	T key;
-	U *data;
+	KeyType key;
+	DataType *data;
 
 public:
-	HashTableSlot(T key, U *data);
+	HashTableSlot(KeyType key, DataType *data);
 	~HashTableSlot();
 
-	T getKey();
-	U* getData();
+	KeyType getKey();
+	DataType* getData();
 };
 
-template<typename T, typename U>
-inline HashTableSlot<T, U>::HashTableSlot(T key, U *data) : key(key), data(data)
+template<typename KeyType, typename DataType>
+inline HashTableSlot<KeyType, DataType>::HashTableSlot(KeyType key, DataType *data) : key(key), data(data)
 {
 }
 
 // TODO: Use smart pointers
-template<typename T, typename U>
-inline HashTableSlot<T, U>::~HashTableSlot()
+template<typename KeyType, typename DataType>
+inline HashTableSlot<KeyType, DataType>::~HashTableSlot()
 {
 	delete data;
 }
 
-template<typename T, typename U>
-inline T HashTableSlot<T, U>::getKey()
+template<typename KeyType, typename DataType>
+inline KeyType HashTableSlot<KeyType, DataType>::getKey()
 {
 	return key;
 }
 
-template<typename T, typename U>
-inline U* HashTableSlot<T, U>::getData()
+template<typename KeyType, typename DataType>
+inline DataType* HashTableSlot<KeyType, DataType>::getData()
 {
 	return data;
 }
