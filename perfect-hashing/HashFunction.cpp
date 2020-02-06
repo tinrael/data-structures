@@ -1,6 +1,6 @@
+#include "HashFunction.h"
 #include <random>
 #include <stdexcept>
-#include "HashFunction.h"
 
 HashFunction::HashFunction(std::size_t m)
 {
