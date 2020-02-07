@@ -69,6 +69,7 @@ inline bool HashTable<KeyType, DataType>::insert(HashTableSlot<KeyType, DataType
 	return false;
 }
 
+// Returns the pointer to data if the search is successful otherwise returns nullptr.
 template<typename KeyType, typename DataType>
 inline DataType* HashTable<KeyType, DataType>::search(KeyType key)
 {
