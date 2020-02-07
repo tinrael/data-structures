@@ -10,7 +10,7 @@ template<typename KeyType, typename DataType>
 class HashTable
 {
 private:
-	HashTableSlot<KeyType, DataType> **table;
+	HashTableSlot<KeyType, DataType>** table;
 	std::size_t size;
 
 	HashFunction hashFunction;
@@ -19,8 +19,8 @@ public:
 	HashTable(std::size_t size);
 	~HashTable();
 
-	bool insert(std::vector<HashTableSlot<KeyType, DataType>*> slots);
-	bool insert(HashTableSlot<KeyType, DataType> *slot);
+	bool insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
+	bool insert(HashTableSlot<KeyType, DataType>* slot);
 	DataType* search(KeyType key);
 };
 
@@ -43,20 +43,29 @@ inline HashTable<KeyType, DataType>::~HashTable()
 	delete[] table;
 }
 
+/* Returns true if all the slots insert without collision.
+Otherwise, only the slots which collide do not insert, and the false value returns.
+ */
 template<typename KeyType, typename DataType>
-inline bool HashTable<KeyType, DataType>::insert(std::vector<HashTableSlot<KeyType, DataType>*> slots)
+inline bool HashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots)
 {
-	bool isCollide = false;
-	for (HashTableSlot<KeyType, DataType> *slot : slots) {
+	if (slots.empty()) {
+		throw std::invalid_argument("No slots to insert in the hash table.");
+	}
+	bool isInsertSuccessfully = true;
+	for (HashTableSlot<KeyType, DataType>* slot : slots) {
 		if (!insert(slot)) {
-			isCollide = true;
+			isInsertSuccessfully = false;
 		}
 	}
-	return isCollide;
+	return isInsertSuccessfully;
 }
 
+/* Returns true if the slot inserts without collision.
+Otherwise, the slot does not insert, and the false value returns.
+ */
 template<typename KeyType, typename DataType>
-inline bool HashTable<KeyType, DataType>::insert(HashTableSlot<KeyType, DataType> *slot)
+inline bool HashTable<KeyType, DataType>::insert(HashTableSlot<KeyType, DataType>* slot)
 {
 	if (!slot || !slot->getData()) {
 		throw std::invalid_argument("The slot argument is incorrect.");
