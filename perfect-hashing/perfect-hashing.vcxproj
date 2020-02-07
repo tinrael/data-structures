@@ -160,6 +160,7 @@
     <ClInclude Include="HashFunction.h" />
     <ClInclude Include="HashTable.h" />
     <ClInclude Include="HashTableSlot.h" />
+    <ClInclude Include="PerfectHashTable.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
