@@ -23,6 +23,7 @@ public:
 	~PerfectHashTable();
 
 	DataType* search(KeyType key);
+	void printKeys();
 };
 
 template<typename KeyType, typename DataType>
@@ -81,4 +82,18 @@ template<typename KeyType, typename DataType>
 inline DataType* PerfectHashTable<KeyType, DataType>::search(KeyType key)
 {
 	return nullptr;
+}
+
+template<typename KeyType, typename DataType>
+inline void PerfectHashTable<KeyType, DataType>::printKeys()
+{
+	for (std::size_t i = 0; i < size; i++) {
+		std::cout << i << ": ";
+		if (primaryTable[i]) {
+			primaryTable[i]->printKeys();
+		}
+		else {
+			std::cout << "_" << std::endl;
+		}
+	}
 }
