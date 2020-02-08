@@ -81,6 +81,10 @@ inline PerfectHashTable<KeyType, DataType>::~PerfectHashTable()
 template<typename KeyType, typename DataType>
 inline DataType* PerfectHashTable<KeyType, DataType>::search(KeyType key)
 {
+	std::size_t index = hashFunction.getHashValue(key);
+	if (primaryTable[index]) {
+		return primaryTable[index]->search(key);
+	}
 	return nullptr;
 }
 
