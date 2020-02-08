@@ -15,12 +15,20 @@ private:
 
 	HashFunction hashFunction;
 
+	bool insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
+
 public:
 	PerfectHashTable(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
 	~PerfectHashTable();
 
 	DataType* search(KeyType key);
 };
+
+template<typename KeyType, typename DataType>
+inline bool PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots)
+{
+	return false;
+}
 
 template<typename KeyType, typename DataType>
 inline PerfectHashTable<KeyType, DataType>::PerfectHashTable(const std::vector<HashTableSlot<KeyType, DataType>*>& slots) : 
@@ -32,6 +40,7 @@ inline PerfectHashTable<KeyType, DataType>::PerfectHashTable(const std::vector<H
 	}
 
 	primaryTable = new HashTable<KeyType, DataType>* [size]();
+	insert(slots);
 }
 
 // TODO: Use smart pointers.
