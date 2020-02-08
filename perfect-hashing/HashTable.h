@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <stdexcept>
 #include <vector>
+#include <iostream>
 
 template<typename KeyType, typename DataType>
 class HashTable
@@ -22,6 +23,7 @@ public:
 	bool insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
 	bool insert(HashTableSlot<KeyType, DataType>* slot);
 	DataType* search(KeyType key);
+	void printKeys();
 };
 
 template<typename KeyType, typename DataType>
@@ -87,4 +89,18 @@ inline DataType* HashTable<KeyType, DataType>::search(KeyType key)
 		return table[index]->getData();
 	}
 	return nullptr;
+}
+
+template<typename KeyType, typename DataType>
+inline void HashTable<KeyType, DataType>::printKeys()
+{
+	for (std::size_t i = 0; i < size; i++) {
+		if (table[i]) {
+			std::cout << "[" << table[i]->getKey() << "]";
+		}
+		else {
+			std::cout << "[_]";
+		}
+	}
+	std::cout << std::endl;
 }
