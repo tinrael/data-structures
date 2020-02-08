@@ -24,10 +24,14 @@ public:
 
 template<typename KeyType, typename DataType>
 inline PerfectHashTable<KeyType, DataType>::PerfectHashTable(const std::vector<HashTableSlot<KeyType, DataType>*>& slots) : 
-	primaryTable(new HashTable<KeyType, DataType>* [slots.size()]()),
 	size(slots.size()),
 	hashFunction(slots.size())
 {
+	if (this->size == 0) {
+		throw std::invalid_argument("Unable to create an empty hash table.");
+	}
+
+	primaryTable = new HashTable<KeyType, DataType>* [size]();
 }
 
 // TODO: Use smart pointers.
