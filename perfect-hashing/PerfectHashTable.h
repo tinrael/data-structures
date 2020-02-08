@@ -5,6 +5,7 @@
 #include "HashTableSlot.h"
 #include <cstddef>
 #include <vector>
+#include <stdexcept>
 
 template<typename KeyType, typename DataType>
 class PerfectHashTable
@@ -15,7 +16,7 @@ private:
 
 	HashFunction hashFunction;
 
-	bool insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
+	void insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
 
 public:
 	PerfectHashTable(const std::vector<HashTableSlot<KeyType, DataType>*>& slots);
@@ -25,9 +26,32 @@ public:
 };
 
 template<typename KeyType, typename DataType>
-inline bool PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots)
+inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots)
 {
-	return false;
+	std::vector<std::vector<HashTableSlot<KeyType, DataType>*>> buckets(size);
+	for (HashTableSlot<KeyType, DataType>* slot : slots) {
+		if (!slot || !slot->getData()) {
+			throw std::invalid_argument("The slots argument is incorrect.");
+		}
+		std::size_t index = hashFunction.getHashValue(slot->getKey());
+		buckets[index].push_back(slot);
+	}
+
+	std::size_t i = 0;
+	for (const std::vector<HashTableSlot<KeyType, DataType>*>& bucket : buckets) {
+		if (!bucket.empty()) {
+			std::size_t secondaryTableSize = bucket.size() * bucket.size();
+			primaryTable[i] = new HashTable<KeyType, DataType>(secondaryTableSize);
+			bool isInsertSuccessfully = primaryTable[i]->insert(bucket);
+
+			while (!isInsertSuccessfully) {
+				delete primaryTable[i];
+				primaryTable[i] = new HashTable<KeyType, DataType>(secondaryTableSize);
+				isInsertSuccessfully = primaryTable[i]->insert(bucket);
+			}
+		}
+		i++;
+	}
 }
 
 template<typename KeyType, typename DataType>
