@@ -78,6 +78,7 @@ inline PerfectHashTable<KeyType, DataType>::~PerfectHashTable()
 	delete[] primaryTable;
 }
 
+// Returns the pointer to data if the search is successful otherwise returns nullptr.
 template<typename KeyType, typename DataType>
 inline DataType* PerfectHashTable<KeyType, DataType>::search(KeyType key)
 {
