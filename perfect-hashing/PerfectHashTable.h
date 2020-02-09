@@ -30,6 +30,7 @@ template<typename KeyType, typename DataType>
 inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot<KeyType, DataType>*>& slots)
 {
 	std::vector<std::vector<HashTableSlot<KeyType, DataType>*>> buckets(size);
+	
 	for (HashTableSlot<KeyType, DataType>* slot : slots) {
 		if (!slot || !slot->getData()) {
 			throw std::invalid_argument("The slots argument is incorrect.");
@@ -38,6 +39,7 @@ inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTa
 		buckets[index].push_back(slot);
 	}
 
+	// Inserts each bucket to the appropriate secondary hash table.
 	std::size_t i = 0;
 	for (const std::vector<HashTableSlot<KeyType, DataType>*>& bucket : buckets) {
 		if (!bucket.empty()) {
@@ -45,6 +47,7 @@ inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTa
 			primaryTable[i] = new HashTable<KeyType, DataType>(secondaryTableSize);
 			bool isInsertSuccessfully = primaryTable[i]->insert(bucket);
 
+			// Repeats the insertion until no successful insertion (without collision) in the secondary hash table.
 			while (!isInsertSuccessfully) {
 				delete primaryTable[i];
 				primaryTable[i] = new HashTable<KeyType, DataType>(secondaryTableSize);
