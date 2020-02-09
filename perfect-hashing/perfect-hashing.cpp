@@ -1,20 +1,53 @@
-// perfect-hashing.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
+#include "Country.h"
+#include "PerfectHashTable.h"
+#include "HashTableSlot.h"
 
+#include <vector>
+#include <string>
+#include <fstream>
 #include <iostream>
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	std::ifstream inputFile;
+	inputFile.open("countries.txt");
+	
+	if (!inputFile.is_open()) {
+		std::cout << "Error. Failed to open the file." << std::endl;
+		return 1;
+	}
+
+	std::vector<HashTableSlot<int, Country>*> slots;
+	std::string name;
+	std::string capital;
+	unsigned population;
+	double hdi;
+	
+	while (inputFile >> name >> capital >> population >> hdi) {
+		slots.emplace_back(new HashTableSlot<int, Country>(population, new Country(name, capital, population, hdi)));
+	}
+	inputFile.close();
+	
+	PerfectHashTable<int, Country>* table = new PerfectHashTable<int, Country>(slots);
+	table->printKeys();
+	
+	for (std::size_t i = 0; i < 10; i++) {
+		std::cout << "Enter the population: ";
+		std::cin >> population;
+		Country* country = table->search(population);
+		if (country) {
+			std::cout << *country;
+		}
+		else {
+			std::cout << "Not found." << std::endl;
+		}
+	}
+
+	for (HashTableSlot<int, Country>* slot : slots) {
+		delete slot->getData();
+		delete slot;
+	}
+	delete table;
+
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
