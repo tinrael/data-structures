@@ -35,7 +35,7 @@ inline HashTable<KeyType, DataType>::HashTable(std::size_t size) : size(size), h
 	table = new HashTableSlot<KeyType, DataType>*[size]();
 }
 
-// TODO: Use smart pointers. Are you sure not to delete hash-table slots?
+// TODO: Use smart pointers.
 template<typename KeyType, typename DataType>
 inline HashTable<KeyType, DataType>::~HashTable()
 {
