@@ -6,6 +6,7 @@
 #include <cstddef>
 #include <vector>
 #include <stdexcept>
+#include <iostream>
 
 template<typename KeyType, typename DataType>
 class PerfectHashTable
