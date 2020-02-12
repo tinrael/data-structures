@@ -59,6 +59,7 @@ inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTa
 	}
 }
 
+// Each hash table slot must contain a unique key. Otherwise, an infinite loop occurs.
 template<typename KeyType, typename DataType>
 inline PerfectHashTable<KeyType, DataType>::PerfectHashTable(const std::vector<HashTableSlot<KeyType, DataType>*>& slots) : 
 	size(slots.size()),
@@ -72,7 +73,6 @@ inline PerfectHashTable<KeyType, DataType>::PerfectHashTable(const std::vector<H
 	insert(slots);
 }
 
-// TODO: Use smart pointers.
 template<typename KeyType, typename DataType>
 inline PerfectHashTable<KeyType, DataType>::~PerfectHashTable()
 {
