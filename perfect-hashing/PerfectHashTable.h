@@ -34,7 +34,7 @@ inline void PerfectHashTable<KeyType, DataType>::insert(const std::vector<HashTa
 	
 	for (HashTableSlot<KeyType, DataType>* slot : slots) {
 		if (!slot || !slot->getData()) {
-			throw std::invalid_argument("The slots argument is incorrect.");
+			throw std::invalid_argument("One or more pointers are nullptr or point to the slot with nullptr data.");
 		}
 		std::size_t index = hashFunction.getHashValue(slot->getKey());
 		buckets[index].push_back(slot);
