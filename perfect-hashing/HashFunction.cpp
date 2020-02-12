@@ -19,10 +19,13 @@ HashFunction::HashFunction(std::size_t m)
 	b = disB(generator);
 }
 
-// TODO: Add hash function from universal class of hash functions here.
 std::size_t HashFunction::getHashValue(std::string key)
 {
-	return 0;
+	unsigned result = 0;
+	for (const char &symbol : key) {
+		result = (a * symbol + result) % p;
+	}
+	return result % m;
 }
 
 std::size_t HashFunction::getHashValue(unsigned key)
