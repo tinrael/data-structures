@@ -6,7 +6,7 @@
 class HashFunction
 {
 public:
-	static const unsigned p = 262139; // prime number
+	static const unsigned p = 524309; // prime number
 
 	unsigned a; // the random in [1, p - 1]
 	unsigned b; // the random in [0, p - 1]
