@@ -18,24 +18,24 @@ int main()
 		return 1;
 	}
 
-	std::vector<HashTableSlot<int, Country>*> slots;
+	std::vector<HashTableSlot<std::string, Country>*> slots;
 	std::string name;
 	std::string capital;
 	unsigned population;
 	double hdi;
 	
 	while (inputFile >> name >> capital >> population >> hdi) {
-		slots.emplace_back(new HashTableSlot<int, Country>(population, new Country(name, capital, population, hdi)));
+		slots.emplace_back(new HashTableSlot<std::string, Country>(name, new Country(name, capital, population, hdi)));
 	}
 	inputFile.close();
 	
-	PerfectHashTable<int, Country>* table = new PerfectHashTable<int, Country>(slots);
+	PerfectHashTable<std::string, Country>* table = new PerfectHashTable<std::string, Country>(slots);
 	table->printKeys();
 	
 	for (std::size_t i = 0; i < 10; i++) {
-		std::cout << "Enter the population: ";
-		std::cin >> population;
-		Country* country = table->search(population);
+		std::cout << "Enter the country: ";
+		std::cin >> name;
+		Country* country = table->search(name);
 		if (country) {
 			std::cout << *country;
 		}
@@ -44,7 +44,7 @@ int main()
 		}
 	}
 
-	for (HashTableSlot<int, Country>* slot : slots) {
+	for (HashTableSlot<std::string, Country>* slot : slots) {
 		delete slot->getData();
 		delete slot;
 	}
