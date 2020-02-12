@@ -35,14 +35,14 @@ inline HashTable<KeyType, DataType>::HashTable(std::size_t size) : size(size), h
 	table = new HashTableSlot<KeyType, DataType>*[size]();
 }
 
-// TODO: Use smart pointers.
 template<typename KeyType, typename DataType>
 inline HashTable<KeyType, DataType>::~HashTable()
 {
 	delete[] table;
 }
 
-/* Returns true if all the slots insert without collision.
+/* The hash table does not take ownership of hash table slots.
+Returns true if all the slots insert without collision.
 Otherwise, only the slots which collide do not insert, and the false value returns.
  */
 template<typename KeyType, typename DataType>
@@ -60,7 +60,8 @@ inline bool HashTable<KeyType, DataType>::insert(const std::vector<HashTableSlot
 	return isInsertSuccessfully;
 }
 
-/* Returns true if the slot inserts without collision.
+/* The hash table does not take ownership of slot.
+Returns true if the slot inserts without collision.
 Otherwise, the slot does not insert, and the false value returns.
  */
 template<typename KeyType, typename DataType>
