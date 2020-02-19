@@ -32,3 +32,8 @@ std::ostream& operator<<(std::ostream& out, const Country& country)
 
 	return out;
 }
+
+std::string Country::getName()
+{
+	return name;
+}

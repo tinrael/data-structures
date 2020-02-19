@@ -16,6 +16,7 @@ public:
 	Country(std::string name, std::string capital, unsigned population, double hdi);
 
 	Country& operator= (const Country& country);
-
 	friend std::ostream& operator<< (std::ostream& out, const Country& country);
+
+	std::string getName();
 };
