@@ -11,27 +11,32 @@
 int main()
 {
 	std::ifstream inputFile;
-	inputFile.open("countries.txt");	
+	inputFile.open("countries.dat", std::ios::binary | std::ios::in);
 	if (!inputFile.is_open()) {
 		std::cout << "Error. Failed to open the file." << std::endl;
 		return 1;
 	}
 
 	std::vector<HashTableSlot<std::string, Country>*> slots;
-	std::string name;
-	std::string capital;
-	unsigned population;
-	double hdi;
 	
-	while (inputFile >> name >> capital >> population >> hdi) {
-		slots.emplace_back(new HashTableSlot<std::string, Country>(name, new Country(name, capital, population, hdi)));
+	Country* newOne = nullptr;
+	while (true) {
+		newOne = new Country();
+		if (newOne->load(inputFile)) {
+			slots.push_back(new HashTableSlot<std::string, Country>(newOne->getName(), newOne));
+		}
+		else {
+			delete newOne;
+			break;
+		}
 	}
+
 	inputFile.close();
 	
 	PerfectHashTable<std::string, Country>* table = new PerfectHashTable<std::string, Country>(slots);
 	
 	std::cout << "-----" << std::endl;
-	std::cout << "| This application is using perfect hashing to store the static set of countries from the file 'countries.txt'." << std::endl;
+	std::cout << "| This application is using perfect hashing to store the static set of countries from the binary file 'countries.dat'." << std::endl;
 	std::cout << "| The searching takes constant time O(1) in the worst case." << std::endl;
 	std::cout << "-----" << std::endl;
 
@@ -45,6 +50,7 @@ int main()
 	std::cout << "-----" << std::endl;
 	
 	Country* country = nullptr;
+	std::string name;
 	for (std::size_t i = 0; i < 10; i++) {
 		std::cout << "Enter the country to search: ";	
 		std::cin >> name;
