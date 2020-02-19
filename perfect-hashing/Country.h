@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 
 class Country
 {
@@ -14,6 +15,9 @@ private:
 public:
 	Country();
 	Country(std::string name, std::string capital, unsigned population, double hdi);
+
+	bool save(std::ofstream& filename);
+	bool load(std::ifstream& filename);
 
 	Country& operator= (const Country& country);
 	friend std::ostream& operator<< (std::ostream& out, const Country& country);
