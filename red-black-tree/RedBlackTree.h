@@ -20,5 +20,13 @@ public:
 
 class RedBlackTree
 {
+private:
+	RBTreeNode* root;
+
+	void rotateLeft(RBTreeNode* x);
+	void rotateRight(RBTreeNode* y);
+
+public:
+	RedBlackTree();
 };
 
