@@ -1,5 +1,7 @@
 #pragma once
 
+#include <iostream>
+
 enum Color {
 	COLOR_RED,
 	COLOR_BLACK
@@ -27,9 +29,13 @@ private:
 	void rotateLeft(RBTreeNode* x);
 	void rotateRight(RBTreeNode* y);
 
+	// Prints the tree according to the inorder traversal.
+	void print(const RBTreeNode* tree, std::ostream& out);
+
 public:
 	RedBlackTree();
 
 	void insert(int key);
+	// Prints the tree according to the inorder traversal.
+	void print(std::ostream& out = std::cout);
 };
-

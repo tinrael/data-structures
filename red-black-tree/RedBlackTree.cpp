@@ -67,6 +67,16 @@ void RedBlackTree::rotateRight(RBTreeNode* y)
 	y->parent = x;
 }
 
+void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	print(tree->left, out);
+	out << tree->key << " ";
+	print(tree->right, out);
+}
+
 RedBlackTree::RedBlackTree() : root(nullptr)
 {
 }
@@ -75,4 +85,9 @@ RedBlackTree::RedBlackTree() : root(nullptr)
 void RedBlackTree::insert(int key)
 {
 	insert(this->root, key);
+}
+
+void RedBlackTree::print(std::ostream& out)
+{
+	print(this->root, out);
 }
