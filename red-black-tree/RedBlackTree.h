@@ -23,10 +23,13 @@ class RedBlackTree
 private:
 	RBTreeNode* root;
 
+	void insert(RBTreeNode*& tree, int key);
 	void rotateLeft(RBTreeNode* x);
 	void rotateRight(RBTreeNode* y);
 
 public:
 	RedBlackTree();
+
+	void insert(int key);
 };
 

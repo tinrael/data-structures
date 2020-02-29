@@ -4,6 +4,19 @@ RBTreeNode::RBTreeNode(int key) : key(key), color(COLOR_RED), parent(nullptr), l
 {
 }
 
+void RedBlackTree::insert(RBTreeNode*& tree, int key)
+{
+	if (!tree) {
+		tree = new RBTreeNode(key);
+	}
+	else if (key < tree->key) {
+		insert(tree->left, key);
+	}
+	else {
+		insert(tree->right, key);
+	}
+}
+
 void RedBlackTree::rotateLeft(RBTreeNode* x)
 {
 	if (!x || !x->right) {
@@ -56,4 +69,10 @@ void RedBlackTree::rotateRight(RBTreeNode* y)
 
 RedBlackTree::RedBlackTree() : root(nullptr)
 {
+}
+
+// TODO: Fix up the red-black tree after insertion.
+void RedBlackTree::insert(int key)
+{
+	insert(this->root, key);
 }
