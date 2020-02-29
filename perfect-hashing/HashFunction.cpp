@@ -23,7 +23,7 @@ std::size_t HashFunction::getHashValue(std::string key)
 {
 	unsigned result = 0;
 	for (const char &symbol : key) {
-		result = (a * symbol + result + b) % p;
+		result = (a * (symbol + result) + b) % p;
 	}
 	return result % m;
 }
