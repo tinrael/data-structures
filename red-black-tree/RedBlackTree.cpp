@@ -105,6 +105,7 @@ void RedBlackTree::insert(int key)
 void RedBlackTree::print(std::ostream& out)
 {
 	print(this->root, out);
+	out << std::endl;
 }
 
 void RedBlackTree::clear()
