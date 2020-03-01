@@ -67,6 +67,49 @@ void RedBlackTree::rotateRight(RBTreeNode* y)
 	y->parent = x;
 }
 
+void RedBlackTree::fix(RBTreeNode* z)
+{
+	while (z->parent && z->parent->color == COLOR_RED) {
+		if (z->parent == z->parent->parent->left) {
+			RBTreeNode* y = z->parent->parent->right;
+			if (y->color == COLOR_RED) {
+				z->parent->color = COLOR_BLACK;
+				y->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				z = z->parent->parent;
+			}
+			else {
+				if (z == z->parent->right) {
+					z = z->parent;
+					rotateLeft(z);
+				}
+				z->parent->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				rotateRight(z->parent->parent);
+			}
+		}
+		else {
+			RBTreeNode* y = z->parent->parent->left;
+			if (y->color == COLOR_RED) {
+				z->parent->color = COLOR_BLACK;
+				y->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				z = z->parent->parent;
+			}
+			else {
+				if (z == z->parent->left) {
+					z = z->parent;
+					rotateRight(z);
+				}
+				z->parent->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				rotateLeft(z->parent->parent);
+			}
+		}
+	}
+	this->root->color = COLOR_BLACK;
+}
+
 void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
 {
 	if (!tree) {
