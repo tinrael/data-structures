@@ -77,8 +77,23 @@ void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
 	print(tree->right, out);
 }
 
+void RedBlackTree::deleteRBTreeNode(RBTreeNode* node)
+{
+	if (!node) {
+		return;
+	}
+	deleteRBTreeNode(node->left);
+	deleteRBTreeNode(node->right);
+	delete node;
+}
+
 RedBlackTree::RedBlackTree() : root(nullptr)
 {
+}
+
+RedBlackTree::~RedBlackTree()
+{
+	clear();
 }
 
 // TODO: Fix up the red-black tree after insertion.
@@ -90,4 +105,10 @@ void RedBlackTree::insert(int key)
 void RedBlackTree::print(std::ostream& out)
 {
 	print(this->root, out);
+}
+
+void RedBlackTree::clear()
+{
+	deleteRBTreeNode(this->root);
+	this->root = nullptr;
 }

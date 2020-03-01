@@ -31,11 +31,15 @@ private:
 
 	// Prints the tree according to the inorder traversal.
 	void print(const RBTreeNode* tree, std::ostream& out);
+	void deleteRBTreeNode(RBTreeNode* node);
 
 public:
 	RedBlackTree();
+	~RedBlackTree();
 
 	void insert(int key);
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
+	// Deletes all nodes.
+	void clear();
 };
