@@ -1,7 +1,16 @@
 #include "RedBlackTree.h"
 
-RBTreeNode::RBTreeNode(int key) : key(key), color(COLOR_RED), parent(nullptr), left(nullptr), right(nullptr)
+std::size_t RBTreeNode::idGenerator = 0;
+
+RBTreeNode::RBTreeNode(int key)
+	: id(idGenerator), 
+	key(key), 
+	color(COLOR_RED), 
+	parent(nullptr), 
+	left(nullptr), 
+	right(nullptr)
 {
+	idGenerator++;
 }
 
 void RedBlackTree::rotateLeft(RBTreeNode* x)

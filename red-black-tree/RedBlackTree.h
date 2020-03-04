@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cstddef>
 
 enum Color {
 	COLOR_RED,
@@ -10,6 +11,8 @@ enum Color {
 // Red-black Tree Node
 class RBTreeNode {
 public:
+	std::size_t id;
+	static std::size_t idGenerator;
 	int key;
 	Color color;
 
