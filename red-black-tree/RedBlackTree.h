@@ -29,7 +29,7 @@ private:
 	void insert(RBTreeNode* z);
 	void rotateLeft(RBTreeNode* x);
 	void rotateRight(RBTreeNode* y);
-	void fix(RBTreeNode* z);
+	void fixup(RBTreeNode* z);
 
 	// Prints the tree according to the inorder traversal.
 	void print(const RBTreeNode* tree, std::ostream& out);
