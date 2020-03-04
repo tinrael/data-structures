@@ -1,37 +1,7 @@
 #include "RedBlackTree.h"
-#include <stdexcept>
 
 RBTreeNode::RBTreeNode(int key) : key(key), color(COLOR_RED), parent(nullptr), left(nullptr), right(nullptr)
 {
-}
-
-void RedBlackTree::insert(RBTreeNode* z)
-{
-	if (!z) {
-		throw std::invalid_argument("The argument is nullptr.");
-	}
-	RBTreeNode* x = this->root;
-	RBTreeNode* y = nullptr;
-	while (x) {
-		y = x;
-		if (z->key < x->key) {
-			x = x->left;
-		}
-		else {
-			x = x->right;
-		}
-	}
-	z->parent = y;
-	if (!y) {
-		this->root = z;
-	}
-	else if (z->key < y->key) {
-		y->left = z;
-	}
-	else {
-		y->right = z;
-	}
-	fixup(z);
 }
 
 void RedBlackTree::rotateLeft(RBTreeNode* x)
@@ -158,8 +128,30 @@ RedBlackTree::~RedBlackTree()
 
 void RedBlackTree::insert(int key)
 {
-	RBTreeNode* newOne = new RBTreeNode(key);
-	insert(newOne);
+	// The red-black tree takes ownership of z.
+	RBTreeNode* z = new RBTreeNode(key);
+	RBTreeNode* x = this->root;
+	RBTreeNode* y = nullptr;
+	while (x) {
+		y = x;
+		if (z->key < x->key) {
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
+	z->parent = y;
+	if (!y) {
+		this->root = z;
+	}
+	else if (z->key < y->key) {
+		y->left = z;
+	}
+	else {
+		y->right = z;
+	}
+	fixup(z);
 }
 
 void RedBlackTree::print(std::ostream& out)

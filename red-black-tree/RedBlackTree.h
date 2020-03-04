@@ -25,8 +25,6 @@ class RedBlackTree
 private:
 	RBTreeNode* root;
 
-	// The red-black tree takes ownership of z.
-	void insert(RBTreeNode* z);
 	void rotateLeft(RBTreeNode* x);
 	void rotateRight(RBTreeNode* y);
 	void fixup(RBTreeNode* z);
