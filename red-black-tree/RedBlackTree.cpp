@@ -31,6 +31,7 @@ void RedBlackTree::insert(RBTreeNode* z)
 	else {
 		y->right = z;
 	}
+	fixup(z);
 }
 
 void RedBlackTree::rotateLeft(RBTreeNode* x)
@@ -155,7 +156,6 @@ RedBlackTree::~RedBlackTree()
 	clear();
 }
 
-// TODO: Fix up the red-black tree after insertion.
 void RedBlackTree::insert(int key)
 {
 	RBTreeNode* newOne = new RBTreeNode(key);
