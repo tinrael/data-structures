@@ -1,19 +1,35 @@
 #include "RedBlackTree.h"
+#include <stdexcept>
 
 RBTreeNode::RBTreeNode(int key) : key(key), color(COLOR_RED), parent(nullptr), left(nullptr), right(nullptr)
 {
 }
 
-void RedBlackTree::insert(RBTreeNode*& tree, int key)
+void RedBlackTree::insert(RBTreeNode* z)
 {
-	if (!tree) {
-		tree = new RBTreeNode(key);
+	if (!z) {
+		throw std::invalid_argument("The argument is nullptr.");
 	}
-	else if (key < tree->key) {
-		insert(tree->left, key);
+	RBTreeNode* x = this->root;
+	RBTreeNode* y = nullptr;
+	while (x) {
+		y = x;
+		if (z->key < x->key) {
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
+	z->parent = y;
+	if (!y) {
+		this->root = z;
+	}
+	else if (z->key < y->key) {
+		y->left = z;
 	}
 	else {
-		insert(tree->right, key);
+		y->right = z;
 	}
 }
 
@@ -142,7 +158,8 @@ RedBlackTree::~RedBlackTree()
 // TODO: Fix up the red-black tree after insertion.
 void RedBlackTree::insert(int key)
 {
-	insert(this->root, key);
+	RBTreeNode* newOne = new RBTreeNode(key);
+	insert(newOne);
 }
 
 void RedBlackTree::print(std::ostream& out)
