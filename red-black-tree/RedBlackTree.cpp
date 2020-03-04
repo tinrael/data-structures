@@ -57,11 +57,11 @@ void RedBlackTree::rotateRight(RBTreeNode* y)
 	if (!y->parent) {
 		this->root = x;
 	}
-	else if (y == y->parent->left) {
-		y->parent->left = x;
+	else if (y == y->parent->right) {
+		y->parent->right = x;
 	}
 	else {
-		y->parent->right = x;
+		y->parent->left = x;
 	}
 	x->right = y;
 	y->parent = x;
