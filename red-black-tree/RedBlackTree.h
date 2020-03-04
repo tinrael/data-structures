@@ -34,6 +34,8 @@ private:
 
 	// Prints the tree according to the inorder traversal.
 	void print(const RBTreeNode* tree, std::ostream& out);
+	void printGraphVertices(RBTreeNode* tree, std::ostream& out);
+	void printGraphEdges(RBTreeNode* tree, std::ostream& out);
 	void deleteRBTreeNode(RBTreeNode* node);
 
 public:
@@ -43,6 +45,8 @@ public:
 	void insert(int key);
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
+	// Prints the description of the red-black tree Graphviz.
+	void printGraph(std::ostream& out = std::cout);
 	// Deletes all nodes.
 	void clear();
 };

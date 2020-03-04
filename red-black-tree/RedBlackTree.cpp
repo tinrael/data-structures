@@ -116,6 +116,42 @@ void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
 	print(tree->right, out);
 }
 
+void RedBlackTree::printGraphVertices(RBTreeNode* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	out << tree->id << " [label=" << tree->key;
+	switch (tree->color) {
+	case COLOR_BLACK:
+		out << ", fillcolor=black]" << std::endl;
+		break;
+	case COLOR_RED:
+		out << ", fillcolor=red]" << std::endl;
+		break;
+	}
+	printGraphVertices(tree->left, out);
+	printGraphVertices(tree->right, out);
+}
+
+void RedBlackTree::printGraphEdges(RBTreeNode* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	if (tree->left) {
+		out << tree->id << " -> ";
+		printGraphEdges(tree->left, out);
+	}
+	if (tree->right) {
+		out << tree->id << " -> ";
+		printGraphEdges(tree->right, out);
+	}
+	if (!tree->right && !tree->left) {
+		out << tree->id << std::endl;
+	}
+}
+
 void RedBlackTree::deleteRBTreeNode(RBTreeNode* node)
 {
 	if (!node) {
@@ -167,6 +203,18 @@ void RedBlackTree::print(std::ostream& out)
 {
 	print(this->root, out);
 	out << std::endl;
+}
+
+void RedBlackTree::printGraph(std::ostream& out)
+{
+	if (!this->root) {
+		return;
+	}
+	out << "digraph G {" << std::endl;
+	out << "node[style=filled, fontname=Helvetica, fontcolor=white, fontsize=20]" << std::endl;
+	printGraphVertices(this->root, out);
+	printGraphEdges(this->root, out);
+	out << "}" << std::endl;
 }
 
 void RedBlackTree::clear()
