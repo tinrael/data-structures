@@ -1,4 +1,5 @@
 #include "RedBlackTree.h"
+#include <stdexcept>
 
 std::size_t RBTreeNode::idGenerator = 0;
 
@@ -11,6 +12,52 @@ RBTreeNode::RBTreeNode(int key)
 	right(nullptr)
 {
 	idGenerator++;
+}
+
+void RedBlackTree::fixup(RBTreeNode* z)
+{
+	if (!z) {
+		throw std::invalid_argument("The argument z is nullptr.");
+	}
+	while (z->parent && z->parent->color == COLOR_RED) {
+		if (z->parent == z->parent->parent->left) {
+			RBTreeNode* y = z->parent->parent->right;
+			if (y && y->color == COLOR_RED) {
+				z->parent->color = COLOR_BLACK;
+				y->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				z = z->parent->parent;
+			}
+			else {
+				if (z == z->parent->right) {
+					z = z->parent;
+					rotateLeft(z);
+				}
+				z->parent->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				rotateRight(z->parent->parent);
+			}
+		}
+		else {
+			RBTreeNode* y = z->parent->parent->left;
+			if (y && y->color == COLOR_RED) {
+				z->parent->color = COLOR_BLACK;
+				y->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				z = z->parent->parent;
+			}
+			else {
+				if (z == z->parent->left) {
+					z = z->parent;
+					rotateRight(z);
+				}
+				z->parent->color = COLOR_BLACK;
+				z->parent->parent->color = COLOR_RED;
+				rotateLeft(z->parent->parent);
+			}
+		}
+	}
+	this->root->color = COLOR_BLACK;
 }
 
 void RedBlackTree::rotateLeft(RBTreeNode* x)
@@ -63,49 +110,6 @@ void RedBlackTree::rotateRight(RBTreeNode* y)
 	y->parent = x;
 }
 
-void RedBlackTree::fixup(RBTreeNode* z)
-{
-	while (z->parent && z->parent->color == COLOR_RED) {
-		if (z->parent == z->parent->parent->left) {
-			RBTreeNode* y = z->parent->parent->right;
-			if (y && y->color == COLOR_RED) {
-				z->parent->color = COLOR_BLACK;
-				y->color = COLOR_BLACK;
-				z->parent->parent->color = COLOR_RED;
-				z = z->parent->parent;
-			}
-			else {
-				if (z == z->parent->right) {
-					z = z->parent;
-					rotateLeft(z);
-				}
-				z->parent->color = COLOR_BLACK;
-				z->parent->parent->color = COLOR_RED;
-				rotateRight(z->parent->parent);
-			}
-		}
-		else {
-			RBTreeNode* y = z->parent->parent->left;
-			if (y && y->color == COLOR_RED) {
-				z->parent->color = COLOR_BLACK;
-				y->color = COLOR_BLACK;
-				z->parent->parent->color = COLOR_RED;
-				z = z->parent->parent;
-			}
-			else {
-				if (z == z->parent->left) {
-					z = z->parent;
-					rotateRight(z);
-				}
-				z->parent->color = COLOR_BLACK;
-				z->parent->parent->color = COLOR_RED;
-				rotateLeft(z->parent->parent);
-			}
-		}
-	}
-	this->root->color = COLOR_BLACK;
-}
-
 void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
 {
 	if (!tree) {
@@ -116,7 +120,17 @@ void RedBlackTree::print(const RBTreeNode* tree, std::ostream& out)
 	print(tree->right, out);
 }
 
-void RedBlackTree::printGraphVertices(RBTreeNode* tree, std::ostream& out)
+void RedBlackTree::deleteRBTreeNode(RBTreeNode* node)
+{
+	if (!node) {
+		return;
+	}
+	deleteRBTreeNode(node->left);
+	deleteRBTreeNode(node->right);
+	delete node;
+}
+
+void RedBlackTree::printDotVertices(RBTreeNode* tree, std::ostream& out)
 {
 	if (!tree) {
 		return;
@@ -129,37 +143,30 @@ void RedBlackTree::printGraphVertices(RBTreeNode* tree, std::ostream& out)
 	case COLOR_RED:
 		out << ", fillcolor=red]" << std::endl;
 		break;
+	default:
+		out << "]" << std::endl;
+		break;
 	}
-	printGraphVertices(tree->left, out);
-	printGraphVertices(tree->right, out);
+	printDotVertices(tree->left, out);
+	printDotVertices(tree->right, out);
 }
 
-void RedBlackTree::printGraphEdges(RBTreeNode* tree, std::ostream& out)
+void RedBlackTree::printDotEdges(RBTreeNode* tree, std::ostream& out)
 {
 	if (!tree) {
 		return;
 	}
 	if (tree->left) {
 		out << tree->id << " -> ";
-		printGraphEdges(tree->left, out);
+		printDotEdges(tree->left, out);
 	}
 	if (tree->right) {
 		out << tree->id << " -> ";
-		printGraphEdges(tree->right, out);
+		printDotEdges(tree->right, out);
 	}
 	if (!tree->right && !tree->left) {
 		out << tree->id << std::endl;
 	}
-}
-
-void RedBlackTree::deleteRBTreeNode(RBTreeNode* node)
-{
-	if (!node) {
-		return;
-	}
-	deleteRBTreeNode(node->left);
-	deleteRBTreeNode(node->right);
-	delete node;
 }
 
 RedBlackTree::RedBlackTree() : root(nullptr)
@@ -205,15 +212,15 @@ void RedBlackTree::print(std::ostream& out)
 	out << std::endl;
 }
 
-void RedBlackTree::printGraph(std::ostream& out)
+void RedBlackTree::printDotLanguage(std::ostream& out)
 {
 	if (!this->root) {
 		return;
 	}
 	out << "digraph G {" << std::endl;
 	out << "node[style=filled, fontname=Helvetica, fontcolor=white, fontsize=20]" << std::endl;
-	printGraphVertices(this->root, out);
-	printGraphEdges(this->root, out);
+	printDotVertices(this->root, out);
+	printDotEdges(this->root, out);
 	out << "}" << std::endl;
 }
 
