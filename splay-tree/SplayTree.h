@@ -27,6 +27,7 @@ private:
 public:
 	SplayTree();
 
+	void insert(T key);
 };
 
 template<typename T>
@@ -123,4 +124,33 @@ inline void SplayTree<T>::splay(TreeNode<T>* x)
 template<typename T>
 inline SplayTree<T>::SplayTree() : root(nullptr)
 {
+}
+
+template<typename T>
+inline void SplayTree<T>::insert(T key)
+{
+	// The splay tree takes ownership of z.
+	TreeNode<T>* z = new TreeNode<T>(key);
+	TreeNode<T>* x = this->root;
+	TreeNode<T>* y = nullptr;
+	while (x) {
+		y = x;
+		if (z->key < x->key) {
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
+	z->parent = y;
+	if (!y) {
+		this->root = z;
+	}
+	else if (z->key < y->key) {
+		y->left = z;
+	}
+	else {
+		y->right = z;
+	}
+	splay(z);
 }
