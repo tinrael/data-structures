@@ -42,6 +42,7 @@ public:
 	void insert(T key);
 	TreeNode<T>* access(T key);	
 	
+	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
 	// Deletes all nodes.
 	void clear();
