@@ -24,11 +24,16 @@ private:
 	void rotateRight(TreeNode<T>* y);
 	void splay(TreeNode<T>* x);
 
+	void deleteTreeNode(TreeNode<T>* node);
+
 public:
 	SplayTree();
 
 	void insert(T key);
 	TreeNode<T>* access(T key);
+
+	// Deletes all nodes.
+	void clear();
 };
 
 template<typename T>
@@ -123,6 +128,17 @@ inline void SplayTree<T>::splay(TreeNode<T>* x)
 }
 
 template<typename T>
+inline void SplayTree<T>::deleteTreeNode(TreeNode<T>* node)
+{
+	if (!node) {
+		return;
+	}
+	deleteTreeNode(node->left);
+	deleteTreeNode(node->right);
+	delete node;
+}
+
+template<typename T>
 inline SplayTree<T>::SplayTree() : root(nullptr)
 {
 }
@@ -178,4 +194,11 @@ inline TreeNode<T>* SplayTree<T>::access(T key)
 		splay(y);
 	}
 	return nullptr;
+}
+
+template<typename T>
+inline void SplayTree<T>::clear()
+{
+	deleteTreeNode(this->root);
+	this->root = nullptr;
 }
