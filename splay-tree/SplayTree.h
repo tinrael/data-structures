@@ -33,6 +33,9 @@ private:
 	void print(const TreeNode<T>* tree, std::ostream& out);
 	void deleteTreeNode(TreeNode<T>* node);
 
+	void printDotVertices(TreeNode<T>* tree, std::ostream& out);
+	void printDotEdges(TreeNode<T>* tree, std::ostream& out);
+
 public:
 	SplayTree();
 
@@ -42,7 +45,9 @@ public:
 	void print(std::ostream& out = std::cout);
 	// Deletes all nodes.
 	void clear();
-	
+
+	// Prints the tree in the DOT language.
+	void printDotLanguage(std::ostream& out = std::cout);	
 };
 
 template<typename T>
@@ -152,6 +157,36 @@ inline void SplayTree<T>::print(const TreeNode<T>* tree, std::ostream& out)
 }
 
 template<typename T>
+inline void SplayTree<T>::printDotVertices(TreeNode<T>* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	out << tree->id << " [label=" << tree->key << "]" << std::endl;
+	printDotVertices(tree->left, out);
+	printDotVertices(tree->right, out);
+}
+
+template<typename T>
+inline void SplayTree<T>::printDotEdges(TreeNode<T>* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	if (tree->left) {
+		out << tree->id << " -> ";
+		printDotEdges(tree->left, out);
+	}
+	if (tree->right) {
+		out << tree->id << " -> ";
+		printDotEdges(tree->right, out);
+	}
+	if (!tree->right && !tree->left) {
+		out << tree->id << std::endl;
+	}
+}
+
+template<typename T>
 inline void SplayTree<T>::deleteTreeNode(TreeNode<T>* node)
 {
 	if (!node) {
@@ -225,6 +260,19 @@ inline void SplayTree<T>::print(std::ostream& out)
 {
 	print(this->root, out);
 	out << std::endl;
+}
+
+template<typename T>
+inline void SplayTree<T>::printDotLanguage(std::ostream& out)
+{
+	if (!this->root) {
+		return;
+	}
+	out << "digraph G {" << std::endl;
+	out << "node[fontname=Helvetica, fontsize=20]" << std::endl;
+	printDotVertices(this->root, out);
+	printDotEdges(this->root, out);
+	out << "}" << std::endl;
 }
 
 template<typename T>
