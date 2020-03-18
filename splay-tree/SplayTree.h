@@ -1,5 +1,7 @@
 #pragma once
 
+#include <stdexcept>
+
 template <typename T>
 class TreeNode {
 public:
@@ -20,6 +22,7 @@ private:
 
 	void rotateLeft(TreeNode<T>* x);
 	void rotateRight(TreeNode<T>* y);
+	void splay(TreeNode<T>* x);
 
 public:
 	SplayTree();
@@ -81,6 +84,40 @@ inline void SplayTree<T>::rotateRight(TreeNode<T>* y)
 	}
 	x->right = y;
 	y->parent = x;
+}
+
+template<typename T>
+inline void SplayTree<T>::splay(TreeNode<T>* x)
+{
+	if (!x) {
+		throw std::invalid_argument("The argument is nullptr.");
+	}
+	while (x->parent) {
+		if (!x->parent->parent) {
+			if (x->parent->left == x) {
+				rotateRight(x->parent);
+			}
+			else {
+				rotateLeft(x->parent);
+			}
+		}
+		else if (x->parent->left == x && x->parent->parent->left == x->parent) {
+			rotateRight(x->parent->parent);
+			rotateRight(x->parent);
+		}
+		else if (x->parent->right == x && x->parent->parent->right == x->parent) {
+			rotateLeft(x->parent->parent);
+			rotateLeft(x->parent);
+		}
+		else if (x->parent->left == x && x->parent->parent->right == x->parent) {
+			rotateRight(x->parent);
+			rotateLeft(x->parent);
+		}
+		else {
+			rotateLeft(x->parent);
+			rotateRight(x->parent);
+		}
+	}
 }
 
 template<typename T>
