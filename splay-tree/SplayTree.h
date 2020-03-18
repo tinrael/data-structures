@@ -28,6 +28,7 @@ public:
 	SplayTree();
 
 	void insert(T key);
+	TreeNode<T>* access(T key);
 };
 
 template<typename T>
@@ -153,4 +154,28 @@ inline void SplayTree<T>::insert(T key)
 		y->right = z;
 	}
 	splay(z);
+}
+
+template<typename T>
+inline TreeNode<T>* SplayTree<T>::access(T key)
+{
+	TreeNode<T>* x = this->root;
+	TreeNode<T>* y = nullptr;
+	while (x) {
+		y = x;
+		if (key == x->key) {
+			splay(x);
+			return x;
+		}
+		else if (key < x->key) {
+			x = x->left;
+		}
+		else {
+			x = x->right;
+		}
+	}
+	if (y) {
+		splay(y);
+	}
+	return nullptr;
 }
