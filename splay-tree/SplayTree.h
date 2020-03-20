@@ -40,6 +40,7 @@ private:
 
 public:
 	SplayTree();
+	~SplayTree();
 
 	void insert(T key);
 	TreeNode<T>* access(T key);	
@@ -231,6 +232,12 @@ inline void SplayTree<T>::deleteTreeNode(TreeNode<T>* node)
 template<typename T>
 inline SplayTree<T>::SplayTree() : root(nullptr)
 {
+}
+
+template<typename T>
+inline SplayTree<T>::~SplayTree()
+{
+	deleteTreeNode(this->root);
 }
 
 template<typename T>
