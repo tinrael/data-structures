@@ -28,6 +28,8 @@ private:
 	void rotateLeft(TreeNode<T>* x);
 	void rotateRight(TreeNode<T>* y);
 	void splay(TreeNode<T>* x);
+	// Combine trees tree1 and tree2 into a single tree.
+	TreeNode<T>* join(TreeNode<T>* tree1, TreeNode<T>* tree2);
 
 	// Prints the tree according to the inorder traversal.
 	void print(const TreeNode<T>* tree, std::ostream& out);
@@ -144,6 +146,28 @@ inline void SplayTree<T>::splay(TreeNode<T>* x)
 			rotateRight(x->parent);
 		}
 	}
+}
+
+/* Combine trees tree1 and tree2 into a single tree containing all items from both trees and return 
+ * the resulting tree. This operation assumes that all items in tree1 are less than all those in tree2
+ * and destroys both tree1 and tree2.
+ */
+template<typename T>
+inline TreeNode<T>* SplayTree<T>::join(TreeNode<T>* tree1, TreeNode<T>* tree2)
+{
+	if (!tree1) {
+		return tree2;
+	}
+	if (!tree2) {
+		return tree1;
+	}
+	while (tree1->right) {
+		tree1 = tree1->right;
+	}
+	splay(tree1);
+	tree1->right = tree2;
+	tree2->parent = tree1;
+	return tree1;
 }
 
 template<typename T>
