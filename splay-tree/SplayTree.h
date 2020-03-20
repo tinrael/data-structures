@@ -165,6 +165,9 @@ inline void SplayTree<T>::printDotVertices(TreeNode<T>* tree, std::ostream& out)
 	}
 	out << tree->id << " [label=" << tree->key << "]" << std::endl;
 	printDotVertices(tree->left, out);
+	if (tree->left || tree->right) {
+		out << "invis" << tree->id << " [label=\"\", width=.8, style=invis]" << std::endl;
+	}
 	printDotVertices(tree->right, out);
 }
 
@@ -184,6 +187,9 @@ inline void SplayTree<T>::printDotEdges(TreeNode<T>* tree, std::ostream& out)
 	}
 	if (!tree->right && !tree->left) {
 		out << tree->id << std::endl;
+	}
+	else {
+		out <<  tree->id << " -> " << "invis" << tree->id << " [style=invis]" << std::endl;
 	}
 }
 
@@ -270,7 +276,7 @@ inline void SplayTree<T>::printDotLanguage(std::ostream& out)
 		return;
 	}
 	out << "digraph G {" << std::endl;
-	out << "node[fontname=Helvetica, fontsize=20]" << std::endl;
+	out << "node[style=filled, fillcolor=lightblue, fontname=Helvetica, fontsize=20]" << std::endl;
 	printDotVertices(this->root, out);
 	printDotEdges(this->root, out);
 	out << "}" << std::endl;
