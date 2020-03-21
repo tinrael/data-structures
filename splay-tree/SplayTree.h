@@ -152,6 +152,9 @@ inline void SplayTree<T>::splay(TreeNode<T>* x)
 /* Combine trees tree1 and tree2 into a single tree containing all items from both trees and return 
  * the resulting tree. This operation assumes that all items in tree1 are less than all those in tree2
  * and destroys both tree1 and tree2.
+ * 
+ * As rotateLeft and rotateRight, used in the splay member function, change this->root
+ * the join member function changes this->root and as a result can make the tree nodes of this object unaccesable.
  */
 template<typename T>
 inline TreeNode<T>* SplayTree<T>::join(TreeNode<T>* tree1, TreeNode<T>* tree2)
