@@ -43,6 +43,7 @@ public:
 	~SplayTree();
 
 	void insert(T key);
+	void erase(T key);
 	TreeNode<T>* access(T key);	
 	
 	// Prints the tree according to the inorder traversal.
@@ -270,6 +271,23 @@ inline void SplayTree<T>::insert(T key)
 		y->right = z;
 	}
 	splay(z);
+}
+
+template<typename T>
+inline void SplayTree<T>::erase(T key)
+{
+	TreeNode<T>* node = access(key);
+	if (!node) {
+		return;
+	}
+	if (node->left) {
+		node->left->parent = nullptr;
+	}
+	if (node->right) {
+		node->right->parent = nullptr;
+	}
+	this->root = join(node->left, node->right);
+	delete node;
 }
 
 template<typename T>
