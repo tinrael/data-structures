@@ -4,9 +4,26 @@
 #include <limits>
 
 template <typename T>
+class TreeNode {
+public:
+	static std::size_t idGenerator;
+	std::size_t id;
+
+	T key;
+
+	TreeNode<T>* parent;
+	TreeNode<T>* left;
+	TreeNode<T>* right;
+
+	TreeNode(T key);
+};
+
+template <typename T>
 class OptimalBinarySearchTree
 {
 private:
+	TreeNode<T>* root;
+
 	T* keys;
 	std::size_t size;
 	
@@ -21,6 +38,15 @@ public:
 	~OptimalBinarySearchTree();
 
 };
+
+template<typename T>
+std::size_t TreeNode<T>::idGenerator = 0;
+
+template<typename T>
+inline TreeNode<T>::TreeNode(T key) : id(idGenerator), key(key), parent(nullptr), left(nullptr), right(nullptr)
+{
+	idGenerator++;
+}
 
 template<typename T>
 inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
@@ -48,7 +74,7 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 
 template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
-	: keys(keys), size(size)
+	: root(nullptr), keys(keys), size(size)
 {
 	e = new double* [size];
 	w = new double* [size];
