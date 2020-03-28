@@ -7,11 +7,14 @@ template <typename T>
 class OptimalBinarySearchTree
 {
 private:
+	T* keys;
+	std::size_t size;
+	
 	double** e;
 	double** w;
-	std::size_t size;
+	std::size_t** root;
 
-	void calculate(T* keys, double* probabilities);
+	void calculate(double* probabilities);
 
 public:
 	OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size);
@@ -20,11 +23,12 @@ public:
 };
 
 template<typename T>
-inline void OptimalBinarySearchTree<T>::calculate(T* keys, double* probabilities)
+inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 {
 	for (std::size_t i = 0; i < size; i++) {
 		e[i][i] = probabilities[i];
 		w[i][i] = probabilities[i];
+		root[i][i] = i;
 	}
 	for (std::size_t l = 1; l <= size - 1; l++) {
 		for (std::size_t i = 0; i < size - l; i++) {
@@ -35,6 +39,7 @@ inline void OptimalBinarySearchTree<T>::calculate(T* keys, double* probabilities
 				double t = ((r > i) ? e[i][r - 1] : 0) + ((r < j) ? e[r + 1][j] : 0) + w[i][j];		
 				if (t < e[i][j]) {
 					e[i][j] = t;
+					root[i][j] = r;
 				}
 			}
 		}
@@ -43,15 +48,17 @@ inline void OptimalBinarySearchTree<T>::calculate(T* keys, double* probabilities
 
 template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
-	: size(size)
+	: keys(keys), size(size)
 {
 	e = new double* [size];
 	w = new double* [size];
+	root = new std::size_t* [size];
 	for (std::size_t i = 0; i < size; i++) {
 		e[i] = new double[size] {};
 		w[i] = new double[size] {};
+		root[i] = new std::size_t[size] {};
 	}
-	calculate(keys, probabilities);
+	calculate(probabilities);
 }
 
 template<typename T>
@@ -60,7 +67,9 @@ inline OptimalBinarySearchTree<T>::~OptimalBinarySearchTree()
 	for (std::size_t i = 0; i < size; i++) {
 		delete[] e[i];
 		delete[] w[i];
+		delete[] root[i];
 	}
 	delete[] e;
 	delete[] w;
+	delete[] root;
 }
