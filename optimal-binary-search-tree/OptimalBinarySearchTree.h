@@ -29,7 +29,7 @@ private:
 	
 	double** e;
 	double** w;
-	std::size_t** root;
+	std::size_t** roots;
 
 	void calculate(double* probabilities);
 
@@ -54,7 +54,7 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 	for (std::size_t i = 0; i < size; i++) {
 		e[i][i] = probabilities[i];
 		w[i][i] = probabilities[i];
-		root[i][i] = i;
+		roots[i][i] = i;
 	}
 	for (std::size_t l = 1; l <= size - 1; l++) {
 		for (std::size_t i = 0; i < size - l; i++) {
@@ -65,7 +65,7 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 				double t = ((r > i) ? e[i][r - 1] : 0) + ((r < j) ? e[r + 1][j] : 0) + w[i][j];		
 				if (t < e[i][j]) {
 					e[i][j] = t;
-					root[i][j] = r;
+					roots[i][j] = r;
 				}
 			}
 		}
@@ -74,15 +74,15 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 
 template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
-	: root(nullptr), keys(keys), size(size)
+	: roots(nullptr), keys(keys), size(size)
 {
 	e = new double* [size];
 	w = new double* [size];
-	root = new std::size_t* [size];
+	roots = new std::size_t* [size];
 	for (std::size_t i = 0; i < size; i++) {
 		e[i] = new double[size] {};
 		w[i] = new double[size] {};
-		root[i] = new std::size_t[size] {};
+		roots[i] = new std::size_t[size] {};
 	}
 	calculate(probabilities);
 }
@@ -93,9 +93,9 @@ inline OptimalBinarySearchTree<T>::~OptimalBinarySearchTree()
 	for (std::size_t i = 0; i < size; i++) {
 		delete[] e[i];
 		delete[] w[i];
-		delete[] root[i];
+		delete[] roots[i];
 	}
 	delete[] e;
 	delete[] w;
-	delete[] root;
+	delete[] roots;
 }
