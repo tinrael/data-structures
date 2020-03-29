@@ -34,6 +34,7 @@ private:
 	std::size_t** roots;
 
 	void calculate(double* probabilities);
+	void build(TreeNode<T>*& tree, std::size_t i, std::size_t j);
 
 	void deleteTreeNode(TreeNode<T>* node);
 	
@@ -78,6 +79,22 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 				}
 			}
 		}
+	}
+}
+
+template<typename T>
+inline void OptimalBinarySearchTree<T>::build(TreeNode<T>*& tree, std::size_t i, std::size_t j)
+{
+	if (i > j) {
+		throw std::invalid_argument("Invalid range. Cannot build a tree on this range.");
+	}
+	std::size_t r = roots[i][j];
+	tree = new TreeNode<T>(keys[r]);
+	if (r > i) {
+		build(tree->left, i, r - 1);
+	}
+	if (r < j) {
+		build(tree->right, r + 1, j);
 	}
 }
 
@@ -144,6 +161,7 @@ inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* prob
 		roots[i] = new std::size_t[size] {};
 	}
 	calculate(probabilities);
+	build(this->root, 0, size - 1);
 }
 
 template<typename T>
