@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <limits>
 #include <stdexcept>
+#include <iostream>
 
 template <typename T>
 class TreeNode {
@@ -35,11 +36,16 @@ private:
 	void calculate(double* probabilities);
 
 	void deleteTreeNode(TreeNode<T>* node);
+	
+	void printDotVertices(TreeNode<T>* tree, std::ostream& out);
+	void printDotEdges(TreeNode<T>* tree, std::ostream& out);
 
 public:
 	OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size);
 	~OptimalBinarySearchTree();
 
+	// Prints the tree in the DOT language.
+	void printDotLanguage(std::ostream& out = std::cout);
 };
 
 template<typename T>
@@ -87,6 +93,42 @@ inline void OptimalBinarySearchTree<T>::deleteTreeNode(TreeNode<T>* node)
 }
 
 template<typename T>
+inline void OptimalBinarySearchTree<T>::printDotVertices(TreeNode<T>* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	out << tree->id << " [label=" << tree->key << "]" << std::endl;
+	printDotVertices(tree->left, out);
+	if (tree->left || tree->right) {
+		out << "invis" << tree->id << " [label=\"\", width=.8, style=invis]" << std::endl;
+	}
+	printDotVertices(tree->right, out);
+}
+
+template<typename T>
+inline void OptimalBinarySearchTree<T>::printDotEdges(TreeNode<T>* tree, std::ostream& out)
+{
+	if (!tree) {
+		return;
+	}
+	if (tree->left) {
+		out << tree->id << " -> ";
+		printDotEdges(tree->left, out);
+	}
+	if (tree->right) {
+		out << tree->id << " -> ";
+		printDotEdges(tree->right, out);
+	}
+	if (!tree->right && !tree->left) {
+		out << tree->id << std::endl;
+	}
+	else {
+		out << tree->id << " -> " << "invis" << tree->id << " [style=invis]" << std::endl;
+	}
+}
+
+template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
 	: roots(nullptr), keys(keys), size(size)
 {
@@ -116,4 +158,17 @@ inline OptimalBinarySearchTree<T>::~OptimalBinarySearchTree()
 	delete[] w;
 	delete[] roots;
 	deleteTreeNode(this->root);
+}
+
+template<typename T>
+inline void OptimalBinarySearchTree<T>::printDotLanguage(std::ostream& out)
+{
+	if (!this->root) {
+		return;
+	}
+	out << "digraph G {" << std::endl;
+	out << "node[style=filled, fillcolor=lightblue, fontname=Helvetica, fontsize=20]" << std::endl;
+	printDotVertices(this->root, out);
+	printDotEdges(this->root, out);
+	out << "}" << std::endl;
 }
