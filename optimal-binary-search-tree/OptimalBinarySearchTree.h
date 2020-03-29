@@ -33,6 +33,8 @@ private:
 
 	void calculate(double* probabilities);
 
+	void deleteTreeNode(TreeNode<T>* node);
+
 public:
 	OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size);
 	~OptimalBinarySearchTree();
@@ -73,6 +75,17 @@ inline void OptimalBinarySearchTree<T>::calculate(double* probabilities)
 }
 
 template<typename T>
+inline void OptimalBinarySearchTree<T>::deleteTreeNode(TreeNode<T>* node)
+{
+	if (!node) {
+		return;
+	}
+	deleteTreeNode(node->left);
+	deleteTreeNode(node->right);
+	delete node;
+}
+
+template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
 	: roots(nullptr), keys(keys), size(size)
 {
@@ -98,4 +111,5 @@ inline OptimalBinarySearchTree<T>::~OptimalBinarySearchTree()
 	delete[] e;
 	delete[] w;
 	delete[] roots;
+	deleteTreeNode(this->root);
 }
