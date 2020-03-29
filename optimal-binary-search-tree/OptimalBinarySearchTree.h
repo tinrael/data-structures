@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <limits>
+#include <stdexcept>
 
 template <typename T>
 class TreeNode {
@@ -89,6 +90,9 @@ template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
 	: roots(nullptr), keys(keys), size(size)
 {
+	if (size == 0) {
+		throw std::invalid_argument("The size cannot be 0.");
+	}
 	e = new double* [size];
 	w = new double* [size];
 	roots = new std::size_t* [size];
