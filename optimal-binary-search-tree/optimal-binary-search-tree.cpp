@@ -18,6 +18,8 @@ int main()
 
 	OptimalBinarySearchTree<int> tree(keys, probabilities, size);
 
+	std::cout << "Expected cost of searching an optimal BST: " << tree.getExpectedSearchCost() << std::endl;
+ 
 	// Prints the tree in the DOT language to the graph1.gv file.
 	tree.printDotLanguage(outputFile);
 }
