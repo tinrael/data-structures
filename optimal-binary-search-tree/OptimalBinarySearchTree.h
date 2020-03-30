@@ -147,6 +147,10 @@ inline void OptimalBinarySearchTree<T>::printDotEdges(TreeNode<T>* tree, std::os
 	}
 }
 
+/* This member function assumes keys (first argument) to be a sequence of size (third argument) keys in SORTED order.
+ * For each key keys[i], there is a probability probabilities[i] that a search will be for keys[i].
+ * Both keys (first argument) and probabilities (second argument) must have the same size size (third argument).
+ */
 template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
 	: roots(nullptr), keys(keys), size(size)
