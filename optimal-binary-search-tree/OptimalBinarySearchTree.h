@@ -45,6 +45,8 @@ public:
 	OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size);
 	~OptimalBinarySearchTree();
 
+	double getExpectedSearchCost();
+
 	// Prints the tree in the DOT language.
 	void printDotLanguage(std::ostream& out = std::cout);
 };
@@ -176,6 +178,12 @@ inline OptimalBinarySearchTree<T>::~OptimalBinarySearchTree()
 	delete[] w;
 	delete[] roots;
 	deleteTreeNode(this->root);
+}
+
+template<typename T>
+inline double OptimalBinarySearchTree<T>::getExpectedSearchCost()
+{
+	return e[0][size - 1];
 }
 
 template<typename T>
