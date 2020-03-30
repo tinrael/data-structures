@@ -153,7 +153,7 @@ inline void OptimalBinarySearchTree<T>::printDotEdges(TreeNode<T>* tree, std::os
  */
 template<typename T>
 inline OptimalBinarySearchTree<T>::OptimalBinarySearchTree(T* keys, double* probabilities, std::size_t size) 
-	: roots(nullptr), keys(keys), size(size)
+	: keys(keys), size(size), roots(nullptr)
 {
 	if (size == 0) {
 		throw std::invalid_argument("The size cannot be 0.");
