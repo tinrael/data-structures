@@ -135,16 +135,16 @@ void RedBlackTree::printDotVertices(RBTreeNode* tree, std::ostream& out)
 	if (!tree) {
 		return;
 	}
-	out << tree->id << " [label=" << tree->key;
+	out << tree->id << " [label=\"" << tree->key;
 	switch (tree->color) {
 	case COLOR_BLACK:
-		out << ", fillcolor=black]" << std::endl;
+		out << "\", fillcolor=black]" << std::endl;
 		break;
 	case COLOR_RED:
-		out << ", fillcolor=red]" << std::endl;
+		out << "\", fillcolor=red]" << std::endl;
 		break;
 	default:
-		out << "]" << std::endl;
+		out << "\"]" << std::endl;
 		break;
 	}
 	printDotVertices(tree->left, out);

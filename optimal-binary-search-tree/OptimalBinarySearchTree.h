@@ -117,7 +117,7 @@ inline void OptimalBinarySearchTree<T>::printDotVertices(TreeNode<T>* tree, std:
 	if (!tree) {
 		return;
 	}
-	out << tree->id << " [label=" << tree->key << "]" << std::endl;
+	out << tree->id << " [label=\"" << tree->key << "\"]" << std::endl;
 	printDotVertices(tree->left, out);
 	if (tree->left || tree->right) {
 		out << "invis" << tree->id << " [label=\"\", width=.8, style=invis]" << std::endl;
