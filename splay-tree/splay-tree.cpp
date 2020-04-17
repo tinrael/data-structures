@@ -1,33 +1,48 @@
 #include "SplayTree.h"
+#include "sqlite3.h"
 #include <iostream>
 #include <fstream>
 
+static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
+	if (argv[0]) {
+		SplayTree<std::string>* tree = static_cast<SplayTree<std::string>*>(NotUsed);
+		tree->insert(argv[0]);
+	}
+	return 0;
+}
+
 int main()
 {
+	sqlite3* db;
+	char* zErrMsg = 0;
+	int rc = sqlite3_open("countries.db", &db);
+	if (rc) {
+		std::cout << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+		sqlite3_close(db);
+		return(1);
+	}
+
 	std::ofstream outputFile("graph1.gv");
 	if (!outputFile.is_open()) {
 		std::cout << "Unable to open file." << std::endl;
 		return 1;
 	}
 
-	SplayTree<int> tree;
-	tree.insert(6);
-	tree.insert(8);
-	tree.insert(10);
-	tree.insert(19);
-	tree.insert(15);
-	tree.insert(13);
-	tree.insert(2);
-	tree.insert(7);
-	tree.insert(12);
-	tree.insert(5);
+	SplayTree<std::string> tree;
+	const char* sql = "select name from country;";
 	
-	tree.erase(50);
-	tree.erase(25);
-	tree.erase(19);
-	tree.erase(8);
+	rc = sqlite3_exec(db, sql, callback, &tree, &zErrMsg);
+	if (rc != SQLITE_OK) {
+		std::cout << "SQL error: " << zErrMsg << std::endl;
+		sqlite3_free(zErrMsg);
+	}
 	
 	tree.print();
 	// Prints the tree in the DOT language to the graph1.gv file.
-	tree.printDotLanguage(outputFile);
+	tree.printDotLanguage(outputFile);	
+	
+	outputFile.close();
+	sqlite3_close(db);
+	
+	return 0;
 }
