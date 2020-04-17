@@ -2,6 +2,7 @@
 #include "sqlite3.h"
 #include <iostream>
 #include <fstream>
+#include <string>
 
 static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
 	if (argv[0]) {
