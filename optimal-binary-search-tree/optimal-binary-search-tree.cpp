@@ -30,8 +30,8 @@ int main()
 		return 1;
 	}
 
+	// TODO: check all corner cases (in particular, select limit 0). Refactor the code.
 	const char* sql = "select name from country order by name asc limit 5;";
-
 	std::vector<std::string> keys;
 	double probabilities[] = { 0.05, 0.3, 0.15, 0.2, 0.3 };
 
