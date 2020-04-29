@@ -25,7 +25,7 @@ inline FibonacciHeap<T>::FibonacciHeap() : numOfNodes(0), min(nullptr)
 template<typename T>
 inline void FibonacciHeap<T>::insert(T key)
 {
-	// The Fibonacci heap tree ownership of x.
+	// The Fibonacci heap takes ownership of x.
 	Node<T>* x = new Node<T>(key);
 	if (!min) {
 		min = x;
