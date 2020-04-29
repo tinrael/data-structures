@@ -14,7 +14,7 @@ public:
 	FibonacciHeap();
 	
 	void insert(T key);
-
+	Node<T>* getMin();
 };
 
 template<typename T>
@@ -41,4 +41,10 @@ inline void FibonacciHeap<T>::insert(T key)
 		}
 	}
 	numOfNodes++;
+}
+
+template<typename T>
+inline Node<T>* FibonacciHeap<T>::getMin()
+{
+	return min;
 }
