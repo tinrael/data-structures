@@ -3,6 +3,7 @@
 #include "Node.h"
 #include <cstddef>
 #include <iostream>
+#include <stdexcept>
 
 template <typename T>
 class FibonacciHeap
@@ -11,6 +12,8 @@ private:
 	std::size_t numOfNodes; // number of nodes in the Fibonacci heap
 	Node<T>* min;
 
+	void link(Node<T> y, Node<T> x);
+
 public:
 	FibonacciHeap();
 	
@@ -18,6 +21,33 @@ public:
 	Node<T>* getMin();
 	void print(std::ostream& out = std::cout);
 };
+
+template<typename T>
+inline void FibonacciHeap<T>::link(Node<T> y, Node<T> x)
+{
+	if (!y || !x) {
+		throw std::invalid_argument("nullptr argument(s) given");
+	}
+
+	y->left->right = y->right;
+	y->right->left = y->left;
+	y->right = y;
+	y->left = y;
+	
+	y->parent = x;
+	if (x->child) {
+		y->right = x->child;
+		y->left = x->child->left;
+		x->child->left->right = y;
+		x->child->left = y;
+	}
+	else {
+		x->child = y;
+	}
+	x->degree++;
+
+	y->mark = false;
+}
 
 template<typename T>
 inline FibonacciHeap<T>::FibonacciHeap() : numOfNodes(0), min(nullptr)
@@ -65,6 +95,6 @@ inline void FibonacciHeap<T>::print(std::ostream& out)
 			}
 		} while (cur != min);
 		std::cout << std::endl;
-	}	
+	}
 	std::cout << "Number of nodes: " << numOfNodes << std::endl;
 }
