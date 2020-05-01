@@ -12,7 +12,7 @@ private:
 	std::size_t numOfNodes; // number of nodes in the Fibonacci heap
 	Node<T>* min;
 
-	void link(Node<T> y, Node<T> x);
+	void link(Node<T>* y, Node<T>* x);
 
 public:
 	FibonacciHeap();
@@ -23,9 +23,9 @@ public:
 };
 
 template<typename T>
-inline void FibonacciHeap<T>::link(Node<T> y, Node<T> x)
+inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
 {
-	if (!y || !x) {
+	if (!y || !x || (y == x)) {
 		throw std::invalid_argument("nullptr argument(s) given");
 	}
 
