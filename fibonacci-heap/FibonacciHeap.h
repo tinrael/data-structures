@@ -2,6 +2,7 @@
 
 #include "Node.h"
 #include <cstddef>
+#include <iostream>
 
 template <typename T>
 class FibonacciHeap
@@ -15,6 +16,7 @@ public:
 	
 	void insert(T key);
 	Node<T>* getMin();
+	void print(std::ostream& out = std::cout);
 };
 
 template<typename T>
@@ -47,4 +49,22 @@ template<typename T>
 inline Node<T>* FibonacciHeap<T>::getMin()
 {
 	return min;
+}
+
+// TODO: print all nodes, not only root nodes
+template<typename T>
+inline void FibonacciHeap<T>::print(std::ostream& out)
+{
+	if (min) {
+		Node<T>* cur = min;
+		do {
+			std::cout << cur->key;
+			cur = cur->right;
+			if (cur != min) {
+				std::cout << " -> ";
+			}
+		} while (cur != min);
+		std::cout << std::endl;
+	}	
+	std::cout << "Number of nodes: " << numOfNodes << std::endl;
 }
