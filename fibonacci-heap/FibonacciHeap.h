@@ -81,20 +81,30 @@ inline Node<T>* FibonacciHeap<T>::getMin()
 	return min;
 }
 
-// TODO: print all nodes, not only root nodes
+// TODO: print all nodes
 template<typename T>
 inline void FibonacciHeap<T>::print(std::ostream& out)
 {
 	if (min) {
-		Node<T>* cur = min;
+		Node<T>* curRoot = min;
 		do {
-			std::cout << cur->key;
-			cur = cur->right;
-			if (cur != min) {
-				std::cout << " -> ";
+			std::cout << curRoot->key << std::endl;
+
+			if (curRoot->child) {
+				Node<T>* curChild = curRoot->child;
+				do {
+					std::cout << curChild->key;
+					curChild = curChild->right;
+					if (curChild != curRoot->child) {
+						std::cout << " -> ";
+					}
+				} while (curChild != curRoot->child);
+				std::cout << std::endl;
 			}
-		} while (cur != min);
-		std::cout << std::endl;
+
+			std::cout << " --- \t --- " << std::endl;		
+			curRoot = curRoot->right;
+		} while (curRoot != min);
 	}
 	std::cout << "Number of nodes: " << numOfNodes << std::endl;
 }
