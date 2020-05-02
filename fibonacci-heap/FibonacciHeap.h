@@ -4,6 +4,9 @@
 #include <cstddef>
 #include <iostream>
 #include <stdexcept>
+#include <vector>
+#include <utility>
+#include <cmath>
 
 template <typename T>
 class FibonacciHeap
@@ -12,6 +15,7 @@ private:
 	std::size_t numOfNodes; // number of nodes in the Fibonacci heap
 	Node<T>* min;
 
+	void consolidate();
 	void link(Node<T>* y, Node<T>* x);
 
 public:
@@ -21,6 +25,46 @@ public:
 	Node<T>* getMin();
 	void print(std::ostream& out = std::cout);
 };
+
+template<typename T>
+inline void FibonacciHeap<T>::consolidate()
+{
+	if (!min) {
+		return;
+	}
+
+	std::vector<Node<T>*> rootList;
+	Node<T>* cur = min;
+	do {
+		rootList.push_back(cur); // Amortized constant complexity
+		cur = cur->right;
+	} while (cur != min);
+
+	std::size_t size = (std::size_t)(std::log(numOfNodes) / std::log(1.5)); // floor[log(1.5, n)]
+	Node<T>** rootTable = new Node<T> * [size]();
+
+	std::size_t d;
+	Node<T>* y;
+	for (Node<T>* x: rootList) {
+		d = x->degree;
+		while (rootTable[d]) {
+			y = rootTable[d];
+			if (x->key > y->key) {
+				std::swap(x, y);
+			}
+			link(y, x);
+			rootTable[d] = nullptr;
+			d++;
+		}
+		rootTable[d] = x;
+
+		if (x->key <= min->key) {
+			min = x;
+		}
+	}
+
+	delete[] rootTable;
+}
 
 template<typename T>
 inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
