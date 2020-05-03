@@ -20,7 +20,7 @@ private:
 
 public:
 	FibonacciHeap();
-	
+
 	void insert(T key);
 	Node<T>* getMin();
 	void print(std::ostream& out = std::cout);
@@ -40,7 +40,7 @@ inline void FibonacciHeap<T>::consolidate()
 		cur = cur->right;
 	} while (cur != min);
 
-	std::size_t size = (std::size_t)(std::log(numOfNodes) / std::log(1.5)); // floor[log(1.5, n)]
+	std::size_t size = (std::size_t)(std::log(numOfNodes) / std::log(1.5)) + 1; // floor[log(1.5, n)] + 1
 	Node<T>** rootTable = new Node<T> * [size]();
 
 	std::size_t d;
