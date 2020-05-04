@@ -17,11 +17,13 @@ private:
 
 	void consolidate();
 	void link(Node<T>* y, Node<T>* x);
+	void mergeLists(Node<T>* x, Node<T>* y);
 
 public:
 	FibonacciHeap();
 
 	void insert(T key);
+	Node<T>* extractMin(); // The heap loses ownership of the returned min node.
 	Node<T>* getMin();
 	void print(std::ostream& out = std::cout);
 };
@@ -93,6 +95,23 @@ inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
 	y->mark = false;
 }
 
+/* This function merges the two disjoint circularly-linked lists together into one circularly-linked list in O(1) time.
+ * It merges y's nodes before x.
+ */
+template<typename T>
+inline void FibonacciHeap<T>::mergeLists(Node<T>* x, Node<T>* y)
+{
+	if (!x || !y) {
+		return;
+	}
+
+	Node<T>* xLeft = x->left;
+	x->left = y->left;
+	y->left->right = x;
+	xLeft->right = y;
+	y->left = xLeft;
+}
+
 template<typename T>
 inline FibonacciHeap<T>::FibonacciHeap() : numOfNodes(0), min(nullptr)
 {
@@ -117,6 +136,34 @@ inline void FibonacciHeap<T>::insert(T key)
 		}
 	}
 	numOfNodes++;
+}
+
+// The heap loses ownership of the returned min node 'z'.
+template<typename T>
+inline Node<T>* FibonacciHeap<T>::extractMin()
+{
+	Node<T>* z = min;
+	if (z) {
+		if (z->child) {
+			Node<T>* cur = z->child;
+			do {
+				cur->parent = nullptr;
+				cur = cur->right;
+			} while (cur != z->child);
+			mergeLists(z, z->child);
+		}
+		z->left->right = z->right;
+		z->right->left = z->left;
+		if (z == z->right) {
+			min = nullptr;
+		}
+		else {
+			min = z->right;
+			consolidate();
+		}
+		numOfNodes--;
+	}
+	return z;
 }
 
 template<typename T>
