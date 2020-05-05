@@ -21,6 +21,8 @@ private:
 	void cut(Node<T>* x, Node<T>* y);
 	void cascadingCut(Node<T>* y);
 
+	Node<T>* find(Node<T>* node, T key);
+
 	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
 	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
 
@@ -28,6 +30,7 @@ public:
 	FibonacciHeap();
 
 	void insert(T key);
+	Node<T>* find(T key);
 	void decreaseKey(Node<T>* x, T newKey);
 	Node<T>* extractMin(); // The heap loses ownership of the returned min node.
 	Node<T>* getMin();
@@ -137,6 +140,29 @@ inline void FibonacciHeap<T>::cascadingCut(Node<T>* y)
 	}
 }
 
+template<typename T>
+inline Node<T>* FibonacciHeap<T>::find(Node<T>* root, T key)
+{
+	if (root) {
+		Node<T>* cur = root;
+		Node<T>* found = nullptr;
+		do {
+			if (key == cur->key) {
+				return cur;
+			}
+			if (key > cur->key) {
+				found = find(cur->child, key);
+				if (found) {
+					return found;
+				}
+			}
+
+			cur = cur->right;
+		} while (cur != root);
+	}
+	return nullptr;
+}
+
 // This function detaches the node pointed by 'x' from the doubly circularly-linked list.
 template<typename T>
 inline void FibonacciHeap<T>::detachFromList(Node<T>* x)
@@ -188,6 +214,12 @@ inline void FibonacciHeap<T>::insert(T key)
 		}
 	}
 	numOfNodes++;
+}
+
+template<typename T>
+inline Node<T>* FibonacciHeap<T>::find(T key)
+{
+	return find(min, key);
 }
 
 template<typename T>
