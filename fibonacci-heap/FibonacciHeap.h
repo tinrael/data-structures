@@ -78,18 +78,11 @@ inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
 	if (!y || !x || (y == x)) {
 		throw std::invalid_argument("nullptr pointer(s) or pointers to the same node are passed as argument(s)");
 	}
-
-	y->left->right = y->right;
-	y->right->left = y->left;
-	y->right = y;
-	y->left = y;
 	
+	detachFromList(y);
 	y->parent = x;
 	if (x->child) {
-		y->right = x->child;
-		y->left = x->child->left;
-		x->child->left->right = y;
-		x->child->left = y;
+		mergeLists(x->child, y);
 	}
 	else {
 		x->child = y;
@@ -167,11 +160,7 @@ inline void FibonacciHeap<T>::insert(T key)
 		min = x;
 	}
 	else {
-		x->right = min;
-		x->left = min->left;
-		min->left->right = x;
-		min->left = x;
-		
+		mergeLists(min, x);
 		if (x->key < min->key) {
 			min = x;
 		}
