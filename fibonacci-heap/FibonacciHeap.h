@@ -17,7 +17,11 @@ private:
 
 	void consolidate();
 	void link(Node<T>* y, Node<T>* x);
-	void mergeLists(Node<T>* x, Node<T>* y);
+	
+	void cut(Node<T>* x, Node<T>* y);
+
+	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
+	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
 
 public:
 	FibonacciHeap();
@@ -72,7 +76,7 @@ template<typename T>
 inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
 {
 	if (!y || !x || (y == x)) {
-		throw std::invalid_argument("nullptr argument(s) given");
+		throw std::invalid_argument("nullptr pointer(s) or pointers to the same node are passed as argument(s)");
 	}
 
 	y->left->right = y->right;
@@ -93,6 +97,43 @@ inline void FibonacciHeap<T>::link(Node<T>* y, Node<T>* x)
 	x->degree++;
 
 	y->mark = false;
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::cut(Node<T>* x, Node<T>* y)
+{
+	if (!x || !y || (x == y)) {
+		throw std::invalid_argument("nullptr pointer(s) or pointers to the same node are passed as argument(s)");
+	}
+
+	if (x == y->child) {
+		if (x == x->right) {
+			y->child = nullptr;
+		}
+		else {
+			y->child = x->right;
+		}
+	}
+
+	detachFromList(x);
+	x->parent = nullptr;
+	x->mark = false;
+	y->degree--;
+	mergeLists(min, x);
+}
+
+// This function detaches the node pointed by 'x' from the doubly circularly-linked list.
+template<typename T>
+inline void FibonacciHeap<T>::detachFromList(Node<T>* x)
+{
+	if (!x) {
+		throw std::invalid_argument("nullptr is passed as argument");
+	}
+
+	x->left->right = x->right;
+	x->right->left = x->left;
+	x->right = x;
+	x->left = x;
 }
 
 /* This function merges the two disjoint circularly-linked lists together into one circularly-linked list in O(1) time.
