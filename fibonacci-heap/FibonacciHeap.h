@@ -21,7 +21,7 @@ private:
 	void cut(Node<T>* x, Node<T>* y);
 	void cascadingCut(Node<T>* y);
 
-	Node<T>* find(Node<T>* node, T key);
+	Node<T>* find(Node<T>* heap, T key);
 
 	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
 	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
@@ -141,11 +141,12 @@ inline void FibonacciHeap<T>::cascadingCut(Node<T>* y)
 }
 
 template<typename T>
-inline Node<T>* FibonacciHeap<T>::find(Node<T>* root, T key)
+inline Node<T>* FibonacciHeap<T>::find(Node<T>* heap, T key)
 {
-	if (root) {
-		Node<T>* cur = root;
+	if (heap) {
+		Node<T>* cur = heap;
 		Node<T>* found = nullptr;
+
 		do {
 			if (key == cur->key) {
 				return cur;
@@ -158,7 +159,7 @@ inline Node<T>* FibonacciHeap<T>::find(Node<T>* root, T key)
 			}
 
 			cur = cur->right;
-		} while (cur != root);
+		} while (cur != heap);
 	}
 	return nullptr;
 }
