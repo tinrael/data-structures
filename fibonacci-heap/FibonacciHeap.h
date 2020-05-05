@@ -28,8 +28,10 @@ public:
 	FibonacciHeap();
 
 	void insert(T key);
+	void decreaseKey(Node<T>* x, T newKey);
 	Node<T>* extractMin(); // The heap loses ownership of the returned min node.
 	Node<T>* getMin();
+	
 	void print(std::ostream& out = std::cout);
 };
 
@@ -186,6 +188,27 @@ inline void FibonacciHeap<T>::insert(T key)
 		}
 	}
 	numOfNodes++;
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::decreaseKey(Node<T>* x, T newKey)
+{
+	if (!x) {
+		throw std::invalid_argument("The nullptr is passed as the argument 'x'.");
+	}
+	else if (newKey > x->key) {
+		throw std::invalid_argument("The new key is bigger than the current key.");
+	}
+	
+	x->key = newKey;
+	Node<T>* y = x->parent;
+	if (y && (x->key < y->key)) {
+		cut(x, y);
+		cascadingCut(y);
+	}
+	if (x->key < min->key) {
+		min = x;
+	}
 }
 
 // The heap loses ownership of the returned min node 'z'.
