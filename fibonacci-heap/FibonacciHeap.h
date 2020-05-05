@@ -19,6 +19,7 @@ private:
 	void link(Node<T>* y, Node<T>* x);
 	
 	void cut(Node<T>* x, Node<T>* y);
+	void cascadingCut(Node<T>* y);
 
 	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
 	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
@@ -113,6 +114,25 @@ inline void FibonacciHeap<T>::cut(Node<T>* x, Node<T>* y)
 	x->mark = false;
 	y->degree--;
 	mergeLists(min, x);
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::cascadingCut(Node<T>* y)
+{
+	if (!y) {
+		throw std::invalid_argument("nullptr is passed as argument");
+	}
+
+	Node<T>* z = y->parent;
+	if (z) {
+		if (y->mark == false) {
+			y->mark == true;
+		}
+		else {
+			cut(y, z);
+			cascadingCut(z);
+		}
+	}
 }
 
 // This function detaches the node pointed by 'x' from the doubly circularly-linked list.
