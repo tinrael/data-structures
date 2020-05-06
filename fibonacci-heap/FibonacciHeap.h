@@ -23,12 +23,14 @@ private:
 	void cascadingCut(Node<T>* y);
 
 	Node<T>* find(Node<T>* heap, T key);
+	void deleteHeap(Node<T>* heap);
 
 	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
 	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
 
 public:
 	FibonacciHeap();
+	~FibonacciHeap();
 
 	void insert(T key);
 	void erase(Node<T>* x);
@@ -39,6 +41,7 @@ public:
 	Node<T>* extractMin(); // The heap loses ownership of the returned min node.
 	Node<T>* getMin();
 	
+	void clear();
 	void print(std::ostream& out = std::cout);
 };
 
@@ -200,8 +203,34 @@ inline void FibonacciHeap<T>::mergeLists(Node<T>* x, Node<T>* y)
 }
 
 template<typename T>
+inline void FibonacciHeap<T>::deleteHeap(Node<T>* heap)
+{
+	if (!heap) {
+		return;
+	}
+
+	Node<T>* cur = heap;
+	Node<T>* last = heap->left;
+	Node<T>* toDelete;
+	while (cur != last) {
+		deleteHeap(cur->child);
+		toDelete = cur;
+		cur = cur->right;
+		delete toDelete;
+	}
+	deleteHeap(last->child);
+	delete last;
+}
+
+template<typename T>
 inline FibonacciHeap<T>::FibonacciHeap() : numOfNodes(0), min(nullptr)
 {
+}
+
+template<typename T>
+inline FibonacciHeap<T>::~FibonacciHeap()
+{
+	deleteHeap(min);
 }
 
 template<typename T>
@@ -310,6 +339,14 @@ template<typename T>
 inline Node<T>* FibonacciHeap<T>::getMin()
 {
 	return min;
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::clear()
+{
+	deleteHeap(min);
+	min = nullptr;
+	numOfNodes = 0;
 }
 
 // TODO: print all nodes
