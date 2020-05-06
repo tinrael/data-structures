@@ -7,6 +7,7 @@
 #include <vector>
 #include <utility>
 #include <cmath>
+#include <limits>
 
 template <typename T>
 class FibonacciHeap
@@ -30,6 +31,8 @@ public:
 	FibonacciHeap();
 
 	void insert(T key);
+	void erase(Node<T>* x);
+	void erase(T key);
 	Node<T>* find(T key);
 	void decreaseKey(Node<T>* x, T newValue);
 	void decreaseKey(T oldValue, T newValue);
@@ -216,6 +219,27 @@ inline void FibonacciHeap<T>::insert(T key)
 		}
 	}
 	numOfNodes++;
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::erase(Node<T>* x)
+{
+	if (!x) {
+		throw std::invalid_argument("The nullptr is passed as the argument 'x'.");
+	}
+
+	decreaseKey(x, std::numeric_limits<T>::lowest());
+	Node<T>* toDelete = extractMin();
+	delete toDelete;
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::erase(T key)
+{
+	Node<T>* found = find(key);
+	if (found) {
+		erase(found);
+	}
 }
 
 template<typename T>
