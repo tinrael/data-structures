@@ -31,7 +31,8 @@ public:
 
 	void insert(T key);
 	Node<T>* find(T key);
-	void decreaseKey(Node<T>* x, T newKey);
+	void decreaseKey(Node<T>* x, T newValue);
+	void decreaseKey(T oldValue, T newValue);
 	Node<T>* extractMin(); // The heap loses ownership of the returned min node.
 	Node<T>* getMin();
 	
@@ -131,7 +132,7 @@ inline void FibonacciHeap<T>::cascadingCut(Node<T>* y)
 	Node<T>* z = y->parent;
 	if (z) {
 		if (y->mark == false) {
-			y->mark == true;
+			y->mark = true;
 		}
 		else {
 			cut(y, z);
@@ -224,16 +225,16 @@ inline Node<T>* FibonacciHeap<T>::find(T key)
 }
 
 template<typename T>
-inline void FibonacciHeap<T>::decreaseKey(Node<T>* x, T newKey)
+inline void FibonacciHeap<T>::decreaseKey(Node<T>* x, T newValue)
 {
 	if (!x) {
 		throw std::invalid_argument("The nullptr is passed as the argument 'x'.");
 	}
-	else if (newKey > x->key) {
+	else if (newValue > x->key) {
 		throw std::invalid_argument("The new key is bigger than the current key.");
 	}
 	
-	x->key = newKey;
+	x->key = newValue;
 	Node<T>* y = x->parent;
 	if (y && (x->key < y->key)) {
 		cut(x, y);
@@ -241,6 +242,15 @@ inline void FibonacciHeap<T>::decreaseKey(Node<T>* x, T newKey)
 	}
 	if (x->key < min->key) {
 		min = x;
+	}
+}
+
+template<typename T>
+inline void FibonacciHeap<T>::decreaseKey(T oldValue, T newValue)
+{
+	Node<T>* found = find(oldValue);
+	if (found) {
+		decreaseKey(found, newValue);
 	}
 }
 
