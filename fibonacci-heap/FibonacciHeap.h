@@ -253,6 +253,8 @@ inline void FibonacciHeap<T>::printVerticesInDot(Node<T>* heap, std::ostream& ou
  * Disable printVerticesIndot(). Look at nodes 24-22-23 again (one more bug here).
  * The attributes of nodes 24 and 23 are correct.
  * TODO: more tests.
+ * TODO: does not work with doubles correctly. Insert in an empty heap any double (0.41). Print in dot.
+ * You'll get: 0.41; { rank=same; 0.410000;  }
  */
 template<typename T>
 inline void FibonacciHeap<T>::printEdgesInDot(Node<T>* heap, std::ostream& out)
