@@ -8,6 +8,7 @@
 #include <utility>
 #include <cmath>
 #include <limits>
+#include <cmath>
 
 template <typename T>
 class FibonacciHeap
@@ -155,7 +156,7 @@ inline Node<T>* FibonacciHeap<T>::find(Node<T>* heap, T key)
 		Node<T>* found = nullptr;
 
 		do {
-			if (key == cur->key) {
+			if (std::abs(key - cur->key) <= std::numeric_limits<T>::epsilon()) {
 				return cur;
 			}
 			if (key > cur->key) {
