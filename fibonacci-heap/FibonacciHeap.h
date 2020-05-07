@@ -422,25 +422,25 @@ inline void FibonacciHeap<T>::print(std::ostream& out)
 	if (min) {
 		Node<T>* curRoot = min;
 		do {
-			std::cout << curRoot->key << std::endl;
+			out << curRoot->key << std::endl;
 
 			if (curRoot->child) {
 				Node<T>* curChild = curRoot->child;
 				do {
-					std::cout << curChild->key;
+					out << curChild->key;
 					curChild = curChild->right;
 					if (curChild != curRoot->child) {
-						std::cout << " -> ";
+						out << " -> ";
 					}
 				} while (curChild != curRoot->child);
-				std::cout << std::endl;
+				out << std::endl;
 			}
 
-			std::cout << " --- \t --- " << std::endl;		
+			out << " --- \t --- " << std::endl;
 			curRoot = curRoot->right;
 		} while (curRoot != min);
 	}
-	std::cout << "Number of nodes: " << numOfNodes << std::endl;
+	out << "Number of nodes: " << numOfNodes << std::endl;
 }
 
 // Single-responsibility principle? Refactor the code.
