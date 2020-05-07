@@ -454,7 +454,7 @@ inline void FibonacciHeap<T>::printInDot(std::ostream& out)
 	}
 
 	out << "graph G {" << std::endl;
-	out << "node[style=filled, fillcolor=lightblue, fontname=Helvetica, fontsize=20]" << std::endl;
+	out << "node[style=filled, fillcolor=lightblue, fontname=Helvetica, fontsize=15]" << std::endl;
 	out << "graph[nodesep = .5];" << std::endl;
 	printVerticesInDot(min, out);
 	printEdgesInDot(min, out);
