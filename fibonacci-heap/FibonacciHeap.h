@@ -241,7 +241,7 @@ inline void FibonacciHeap<T>::printVerticesInDot(Node<T>* heap, std::ostream& ou
 		if (cur->mark == true) {
 			out << cur->key << " [fillcolor=red, fontcolor=white];" << std::endl;
 		}
-		printVerticesInDot(cur->child);
+		printVerticesInDot(cur->child, out);
 		
 		cur = cur->right;
 	} while (cur != heap);
@@ -267,7 +267,7 @@ inline void FibonacciHeap<T>::printEdgesInDot(Node<T>* heap, std::ostream& out)
 	do {
 		if (cur->child) {
 			out << cur->key << " -- ";
-			printEdgesInDot(cur->child);
+			printEdgesInDot(cur->child, out);
 		}
 		if (cur->parent && (cur != cur->parent->child)) {
 			out << cur->parent->key << " -- " << cur->key << std::endl;
