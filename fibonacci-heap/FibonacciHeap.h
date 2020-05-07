@@ -9,6 +9,7 @@
 #include <cmath>
 #include <limits>
 #include <cmath>
+#include <string>
 
 template <typename T>
 class FibonacciHeap
@@ -25,6 +26,9 @@ private:
 
 	Node<T>* find(Node<T>* heap, T key);
 	void deleteHeap(Node<T>* heap);
+
+	void printVerticesInDot(Node<T>* heap, std::ostream& out = std::cout);
+	void printEdgesInDot(Node<T>* heap, std::ostream& out = std::cout);
 
 	void detachFromList(Node<T>* x); // detach the node from the doubly circularly-linked list
 	void mergeLists(Node<T>* x, Node<T>* y); // merge two doubly circularly-linked lists together
@@ -44,6 +48,8 @@ public:
 	
 	void clear();
 	void print(std::ostream& out = std::cout);
+	// Prints the heap in the DOT language.
+	void printInDot(std::ostream& out = std::cout); // Single-responsibility principle? Refactor the code.
 };
 
 template<typename T>
@@ -224,6 +230,65 @@ inline void FibonacciHeap<T>::deleteHeap(Node<T>* heap)
 }
 
 template<typename T>
+inline void FibonacciHeap<T>::printVerticesInDot(Node<T>* heap, std::ostream& out)
+{
+	if (!heap) {
+		return;
+	}
+
+	Node<T>* cur = heap;
+	do {
+		if (cur->mark == true) {
+			out << cur->key << " [fillcolor=red, fontcolor=white];" << std::endl;
+		}
+		printVerticesInDot(cur->child);
+		
+		cur = cur->right;
+	} while (cur != heap);
+}
+
+/* Not stable version.
+ * TODO BUG: insert in a heap 50 numbers from 1 to 50 [1...50].
+ * Then extractMin(), erase(6), erase(12), erase(25) (in this order). Print in dot. Look at nodes 24-22-23 (bug here).
+ * Disable printVerticesIndot(). Look at nodes 24-22-23 again (one more bug here).
+ * The attributes of nodes 24 and 23 are correct.
+ * TODO: more tests.
+ */
+template<typename T>
+inline void FibonacciHeap<T>::printEdgesInDot(Node<T>* heap, std::ostream& out)
+{
+	if (!heap) {
+		return;
+	}
+
+	std::string rank = "{ rank=same; ";
+	
+	Node<T>* cur = heap;
+	do {
+		if (cur->child) {
+			out << cur->key << " -- ";
+			printEdgesInDot(cur->child);
+		}
+		if (cur->parent && (cur != cur->parent->child)) {
+			out << cur->parent->key << " -- " << cur->key << std::endl;
+		}
+		if (cur->right != heap) {
+			out << cur->key << " -- ";
+		}
+		else if (!cur->child) {
+			out << cur->key << ";" << std::endl;
+		}
+
+		rank += std::to_string(cur->key) + "; ";
+
+		cur = cur->right;
+	} while (cur != heap);
+
+	rank += " }";
+	out << rank << std::endl;
+}
+
+template<typename T>
 inline FibonacciHeap<T>::FibonacciHeap() : numOfNodes(0), min(nullptr)
 {
 }
@@ -376,4 +441,19 @@ inline void FibonacciHeap<T>::print(std::ostream& out)
 		} while (curRoot != min);
 	}
 	std::cout << "Number of nodes: " << numOfNodes << std::endl;
+}
+
+// Single-responsibility principle? Refactor the code.
+template<typename T>
+inline void FibonacciHeap<T>::printInDot(std::ostream& out)
+{
+	if (!min) {
+		return;
+	}
+
+	out << "graph G {" << std::endl;
+	out << "node[style=filled, fillcolor=lightblue, fontname=Helvetica, fontsize=20]" << std::endl;
+	printVerticesInDot(min, out);
+	printEdgesInDot(min, out);
+	out << "}" << std::endl;
 }
