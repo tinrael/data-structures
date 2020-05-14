@@ -175,6 +175,9 @@ inline void RedBlackTree<KeyType>::printDotVertices(RBTreeNode<KeyType>* tree, s
 		break;
 	}
 	printDotVertices(tree->left, out);
+	if (tree->left || tree->right) {
+		out << "invis" << tree->id << " [label=\"\", width=.8, style=invis]" << std::endl;
+	}
 	printDotVertices(tree->right, out);
 }
 
@@ -194,6 +197,9 @@ inline void RedBlackTree<KeyType>::printDotEdges(RBTreeNode<KeyType>* tree, std:
 	}
 	if (!tree->right && !tree->left) {
 		out << tree->id << std::endl;
+	}
+	else {
+		out << tree->id << " -> " << "invis" << tree->id << " [style=invis]" << std::endl;
 	}
 }
 
