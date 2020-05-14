@@ -43,6 +43,7 @@ public:
 	~SplayTree();
 
 	void insert(T key);
+	// Deletes the node with the key 'key'.
 	void erase(T key);
 	TreeNode<T>* access(T key);	
 	
