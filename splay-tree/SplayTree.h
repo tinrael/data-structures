@@ -45,7 +45,10 @@ public:
 	void insert(T key);
 	// Deletes the node with the key 'key'.
 	void erase(T key);
-	TreeNode<T>* access(T key);	
+	// Returns the pointer to the node with the key 'key'.
+	TreeNode<T>* access(T key);
+	// Returns the pointer to the root.
+	TreeNode<T>* getRoot();
 	
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
@@ -340,4 +343,10 @@ inline void SplayTree<T>::clear()
 {
 	deleteTreeNode(this->root);
 	this->root = nullptr;
+}
+
+template<typename T>
+inline TreeNode<T>* SplayTree<T>::getRoot()
+{
+	return root;
 }
