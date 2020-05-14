@@ -10,7 +10,7 @@ int main()
 		return 1;
 	}
 
-	RedBlackTree tree;
+	RedBlackTree<int> tree;
 	tree.insert(6);
 	tree.insert(17);
 	tree.insert(34);
