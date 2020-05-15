@@ -3,6 +3,7 @@
 #include "RBTreeNode.h"
 #include <iostream>
 #include <stdexcept>
+#include <cstddef>
 
 template <typename KeyType>
 class PersistentRBTree
@@ -22,6 +23,10 @@ private:
 	void printDotEdges(RBTreeNode<KeyType>* tree, std::ostream& out);
 
 public:
+	RBTreeNode<KeyType>* roots[50];
+	std::size_t current;
+	std::size_t next;
+
 	PersistentRBTree();
 	~PersistentRBTree();
 
@@ -204,7 +209,7 @@ inline void PersistentRBTree<KeyType>::printDotEdges(RBTreeNode<KeyType>* tree, 
 }
 
 template<typename KeyType>
-inline PersistentRBTree<KeyType>::PersistentRBTree() : root(nullptr)
+inline PersistentRBTree<KeyType>::PersistentRBTree() : root(nullptr), roots(), current(0), next(1)
 {
 }
 
@@ -219,28 +224,30 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 {
 	// The red-black tree takes ownership of z.
 	RBTreeNode<KeyType>* z = new RBTreeNode<KeyType>(key);
-	RBTreeNode<KeyType>* x = this->root;
-	RBTreeNode<KeyType>* y = nullptr;
+
+	RBTreeNode<KeyType>* x = roots[current];
+	RBTreeNode<KeyType>** y = &roots[next];
+	RBTreeNode<KeyType>* p = nullptr;
+
 	while (x) {
-		y = x;
+		*y = new RBTreeNode<KeyType>(*x);
+		(*y)->parent = p;
 		if (z->key < x->key) {
 			x = x->left;
+			p = *y;
+			y = &((*y)->left);
 		}
 		else {
 			x = x->right;
+			p = *y;
+			y = &((*y)->right);
 		}
 	}
-	z->parent = y;
-	if (!y) {
-		this->root = z;
-	}
-	else if (z->key < y->key) {
-		y->left = z;
-	}
-	else {
-		y->right = z;
-	}
-	fixup(z);
+	z->parent = p;
+	*y = z;
+
+	current = next;
+	next++;
 }
 
 template<typename KeyType>
