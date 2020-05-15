@@ -32,7 +32,7 @@ public:
 	void clear();
 
 	// Prints the tree in the DOT language.
-	void printDotLanguage(std::ostream& out = std::cout);
+	void printDotLanguage(RBTreeNode<KeyType>* tree, std::ostream& out = std::cout);
 };
 
 template <typename KeyType>
@@ -251,15 +251,15 @@ inline void PersistentRBTree<KeyType>::print(std::ostream& out)
 }
 
 template<typename KeyType>
-inline void PersistentRBTree<KeyType>::printDotLanguage(std::ostream& out)
+inline void PersistentRBTree<KeyType>::printDotLanguage(RBTreeNode<KeyType>* tree, std::ostream& out)
 {
-	if (!this->root) {
+	if (!tree) {
 		return;
 	}
 	out << "digraph G {" << std::endl;
 	out << "node[style=filled, fontname=Helvetica, fontcolor=white, fontsize=20]" << std::endl;
-	printDotVertices(this->root, out);
-	printDotEdges(this->root, out);
+	printDotVertices(tree, out);
+	printDotEdges(tree, out);
 	out << "}" << std::endl;
 }
 
