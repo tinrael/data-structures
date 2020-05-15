@@ -50,6 +50,10 @@ inline void PersistentRBTree<KeyType>::fixup(RBTreeNode<KeyType>* z)
 		if (z->parent == z->parent->parent->left) {
 			RBTreeNode<KeyType>* y = z->parent->parent->right;
 			if (y && y->color == COLOR_RED) {
+				z->parent->parent->right = new RBTreeNode<KeyType>(*y);
+				y = z->parent->parent->right;
+				y->parent = z->parent->parent;
+
 				z->parent->color = COLOR_BLACK;
 				y->color = COLOR_BLACK;
 				z->parent->parent->color = COLOR_RED;
@@ -68,6 +72,10 @@ inline void PersistentRBTree<KeyType>::fixup(RBTreeNode<KeyType>* z)
 		else {
 			RBTreeNode<KeyType>* y = z->parent->parent->left;
 			if (y && y->color == COLOR_RED) {
+				z->parent->parent->left = new RBTreeNode<KeyType>(*y);
+				y = z->parent->parent->left;
+				y->parent = z->parent->parent;
+
 				z->parent->color = COLOR_BLACK;
 				y->color = COLOR_BLACK;
 				z->parent->parent->color = COLOR_RED;
@@ -84,7 +92,7 @@ inline void PersistentRBTree<KeyType>::fixup(RBTreeNode<KeyType>* z)
 			}
 		}
 	}
-	this->root->color = COLOR_BLACK;
+	roots[current]->color = COLOR_BLACK;
 }
 
 template<typename KeyType>
@@ -101,7 +109,7 @@ inline void PersistentRBTree<KeyType>::rotateLeft(RBTreeNode<KeyType>* x)
 	}
 	y->parent = x->parent;
 	if (!x->parent) {
-		this->root = y;
+		roots[current] = y;
 	}
 	else if (x == x->parent->left) {
 		x->parent->left = y;
@@ -127,7 +135,7 @@ inline void PersistentRBTree<KeyType>::rotateRight(RBTreeNode<KeyType>* y)
 	}
 	x->parent = y->parent;
 	if (!y->parent) {
-		this->root = x;
+		roots[current] = x;
 	}
 	else if (y == y->parent->right) {
 		y->parent->right = x;
@@ -248,6 +256,8 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 
 	current = next;
 	next++;
+
+	fixup(z);
 }
 
 template<typename KeyType>
