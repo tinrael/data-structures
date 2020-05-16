@@ -263,7 +263,7 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 template<typename KeyType>
 inline void PersistentRBTree<KeyType>::print(std::ostream& out)
 {
-	print(this->root, out);
+	print(roots[current], out);
 	out << std::endl;
 }
 
@@ -283,6 +283,6 @@ inline void PersistentRBTree<KeyType>::printDotLanguage(RBTreeNode<KeyType>* tre
 template<typename KeyType>
 inline void PersistentRBTree<KeyType>::clear()
 {
-	deleteRBTreeNode(this->root);
-	this->root = nullptr;
+	deleteRBTreeNode(roots[current]);
+	roots[current] = nullptr;
 }
