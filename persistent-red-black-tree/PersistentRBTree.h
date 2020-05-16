@@ -221,6 +221,7 @@ inline PersistentRBTree<KeyType>::PersistentRBTree() : root(nullptr), roots(), c
 {
 }
 
+// TODO: This operation works incorrectly. Need to use smart pointers.
 template<typename KeyType>
 inline PersistentRBTree<KeyType>::~PersistentRBTree()
 {
@@ -280,6 +281,7 @@ inline void PersistentRBTree<KeyType>::printDotLanguage(RBTreeNode<KeyType>* tre
 	out << "}" << std::endl;
 }
 
+// TODO: This operation works incorrectly. Need to use smart pointers.
 template<typename KeyType>
 inline void PersistentRBTree<KeyType>::clear()
 {
