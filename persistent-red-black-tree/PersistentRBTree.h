@@ -10,6 +10,10 @@ template <typename KeyType>
 class PersistentRBTree
 {
 private:
+	std::vector<RBTreeNode<KeyType>*> roots;
+	std::size_t current;
+	std::size_t next;
+
 	void fixup(RBTreeNode<KeyType>* z);
 	void rotateLeft(RBTreeNode<KeyType>* x);
 	void rotateRight(RBTreeNode<KeyType>* y);
@@ -22,10 +26,6 @@ private:
 	void printDotEdges(RBTreeNode<KeyType>* tree, std::ostream& out);
 
 public:
-	std::vector<RBTreeNode<KeyType>*> roots;
-	std::size_t current;
-	std::size_t next;
-
 	PersistentRBTree();
 	~PersistentRBTree();
 
