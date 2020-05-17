@@ -33,6 +33,8 @@ public:
 	
 	// Cancels the last operation.
 	void undo();
+	// Reverses the undo operation.
+	void redo();
 	
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
@@ -267,6 +269,7 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 	if (next == size) {
 		roots.resize(2 * size);
 	}
+	roots[next] = nullptr;
 }
 
 template<typename KeyType>
@@ -275,6 +278,15 @@ inline void PersistentRBTree<KeyType>::undo()
 	if (current) {
 		next = current;
 		current--;
+	}
+}
+
+template<typename KeyType>
+inline void PersistentRBTree<KeyType>::redo()
+{
+	if (roots[next]) {
+		current = next;
+		next++;
 	}
 }
 
