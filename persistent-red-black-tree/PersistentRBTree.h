@@ -30,6 +30,10 @@ public:
 	~PersistentRBTree();
 
 	void insert(KeyType key);
+	
+	// Cancels the last operation.
+	void undo();
+	
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
 	// Deletes all nodes.
@@ -262,6 +266,15 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 	std::size_t size = roots.size();
 	if (next == size) {
 		roots.resize(2 * size);
+	}
+}
+
+template<typename KeyType>
+inline void PersistentRBTree<KeyType>::undo()
+{
+	if (current) {
+		next = current;
+		current--;
 	}
 }
 
