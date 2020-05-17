@@ -4,6 +4,7 @@
 #include <iostream>
 #include <stdexcept>
 #include <cstddef>
+#include <vector>
 
 template <typename KeyType>
 class PersistentRBTree
@@ -21,7 +22,7 @@ private:
 	void printDotEdges(RBTreeNode<KeyType>* tree, std::ostream& out);
 
 public:
-	RBTreeNode<KeyType>* roots[50];
+	std::vector<RBTreeNode<KeyType>*> roots;
 	std::size_t current;
 	std::size_t next;
 
@@ -215,7 +216,7 @@ inline void PersistentRBTree<KeyType>::printDotEdges(RBTreeNode<KeyType>* tree, 
 }
 
 template<typename KeyType>
-inline PersistentRBTree<KeyType>::PersistentRBTree() : roots(), current(0), next(1)
+inline PersistentRBTree<KeyType>::PersistentRBTree() : roots(2), current(0), next(1)
 {
 }
 
@@ -257,6 +258,11 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 	next++;
 
 	fixup(z);
+
+	std::size_t size = roots.size();
+	if (next == size) {
+		roots.resize(2 * size);
+	}
 }
 
 template<typename KeyType>
