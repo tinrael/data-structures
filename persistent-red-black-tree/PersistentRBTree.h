@@ -269,7 +269,7 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 	if (next == size) {
 		roots.resize(2 * size);
 	}
-	roots[next] = nullptr;
+	roots[next] = nullptr; // TODO BUG: memory leak if roots[next] was not nullptr.
 }
 
 /* TODO BUG: memory leak.
