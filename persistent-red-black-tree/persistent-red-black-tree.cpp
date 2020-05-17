@@ -1,20 +1,49 @@
-// persistent-red-black-tree.cpp : This file contains the 'main' function. Program execution begins and ends there.
-//
-
+#include "PersistentRBTree.h"
+#include "sqlite3.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+
+static int callback(void* NotUsed, int argc, char** argv, char** azColName) {
+	if (argv[0]) {
+		PersistentRBTree<std::string>* tree = static_cast<PersistentRBTree<std::string>*>(NotUsed);
+		tree->insert(argv[0]);
+	}
+	return 0;
+}
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	sqlite3* db;
+	char* zErrMsg = 0;
+	int rc = sqlite3_open("countries.db", &db);
+	if (rc) {
+		std::cout << "Can't open database: " << sqlite3_errmsg(db) << std::endl;
+		sqlite3_close(db);
+		return(1);
+	}
+
+	std::ofstream outputFile("graph1.gv");
+	if (!outputFile.is_open()) {
+		std::cout << "Unable to open file." << std::endl;
+		return 1;
+	}
+
+	PersistentRBTree<std::string> tree;
+	const char* sql = "select name from country;";
+
+	rc = sqlite3_exec(db, sql, callback, &tree, &zErrMsg);
+	if (rc != SQLITE_OK) {
+		std::cout << "SQL error: " << zErrMsg << std::endl;
+		sqlite3_free(zErrMsg);
+	}
+
+	tree.print();
+	// Prints the tree in the DOT language to the graph1.gv file.
+	tree.printDotLanguage(outputFile);
+
+	outputFile.close();
+	sqlite3_close(db);
+
+	return 0;
 }
-
-// Run program: Ctrl + F5 or Debug > Start Without Debugging menu
-// Debug program: F5 or Debug > Start Debugging menu
-
-// Tips for Getting Started: 
-//   1. Use the Solution Explorer window to add/manage files
-//   2. Use the Team Explorer window to connect to source control
-//   3. Use the Output window to see build output and other messages
-//   4. Use the Error List window to view errors
-//   5. Go to Project > Add New Item to create new code files, or Project > Add Existing Item to add existing code files to the project
-//   6. In the future, to open this project again, go to File > Open > Project and select the .sln file
