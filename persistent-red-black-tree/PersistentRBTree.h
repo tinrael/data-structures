@@ -272,6 +272,10 @@ inline void PersistentRBTree<KeyType>::insert(KeyType key)
 	roots[next] = nullptr;
 }
 
+/* TODO BUG: memory leak.
+ * Do the following in the appropriate order: insert(1), insert(2), insert(3), undo() and insert(5).
+ * After this operation sequence the access to the tree with the root node 3 is lost.
+ */
 template<typename KeyType>
 inline void PersistentRBTree<KeyType>::undo()
 {
