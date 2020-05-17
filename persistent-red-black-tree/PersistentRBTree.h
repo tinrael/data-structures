@@ -9,8 +9,6 @@ template <typename KeyType>
 class PersistentRBTree
 {
 private:
-	RBTreeNode<KeyType>* root;
-
 	void fixup(RBTreeNode<KeyType>* z);
 	void rotateLeft(RBTreeNode<KeyType>* x);
 	void rotateRight(RBTreeNode<KeyType>* y);
@@ -217,7 +215,7 @@ inline void PersistentRBTree<KeyType>::printDotEdges(RBTreeNode<KeyType>* tree, 
 }
 
 template<typename KeyType>
-inline PersistentRBTree<KeyType>::PersistentRBTree() : root(nullptr), roots(), current(0), next(1)
+inline PersistentRBTree<KeyType>::PersistentRBTree() : roots(), current(0), next(1)
 {
 }
 
