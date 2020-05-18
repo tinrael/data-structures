@@ -28,6 +28,9 @@ public:
 	void insert(KeyType key);
 	// Returns the pointer to the node with the key 'key'.
 	RBTreeNode<KeyType>* search(KeyType key);
+	
+	// Returns the pointer to the root.
+	RBTreeNode<KeyType>* getRoot();
 	// Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
 	// Deletes all nodes.
@@ -258,6 +261,12 @@ inline RBTreeNode<KeyType>* RedBlackTree<KeyType>::search(KeyType key)
 		}
 	}
 	return x;
+}
+
+template<typename KeyType>
+inline RBTreeNode<KeyType>* RedBlackTree<KeyType>::getRoot()
+{
+	return this->root;
 }
 
 template<typename KeyType>
