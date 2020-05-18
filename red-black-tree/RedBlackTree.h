@@ -14,7 +14,7 @@ private:
 	void rotateLeft(RBTreeNode<KeyType>* x);
 	void rotateRight(RBTreeNode<KeyType>* y);
 
-	// Prints the tree according to the inorder traversal.
+	//! Prints the tree according to the inorder traversal.
 	void print(const RBTreeNode<KeyType>* tree, std::ostream& out);
 	void deleteRBTreeNode(RBTreeNode<KeyType>* node);
 
@@ -25,18 +25,19 @@ public:
 	RedBlackTree();
 	~RedBlackTree();
 
+	//! Inserts the key 'key' into the tree.
 	void insert(KeyType key);
-	// Returns the pointer to the node with the key 'key'.
+	//! Returns the pointer to the node with the key 'key'.
 	RBTreeNode<KeyType>* search(KeyType key);
-	
-	// Returns the pointer to the root.
+	//! Returns the pointer to the root.
 	RBTreeNode<KeyType>* getRoot();
-	// Prints the tree according to the inorder traversal.
+	
+	//! Prints the tree according to the inorder traversal.
 	void print(std::ostream& out = std::cout);
-	// Deletes all nodes.
+	//! Deletes (free the memory) all nodes.
 	void clear();
 
-	// Prints the tree in the DOT language.
+	//! Prints the tree in the DOT language.
 	void printDotLanguage(std::ostream& out = std::cout);
 };
 
@@ -248,6 +249,10 @@ inline void RedBlackTree<KeyType>::insert(KeyType key)
 	fixup(z);
 }
 
+/*!
+ * If the node with the key 'key' exists, returns the not null pointer to that node.
+ * Otherwise, returns null pointer.
+ */
 template<typename KeyType>
 inline RBTreeNode<KeyType>* RedBlackTree<KeyType>::search(KeyType key)
 {
@@ -263,6 +268,10 @@ inline RBTreeNode<KeyType>* RedBlackTree<KeyType>::search(KeyType key)
 	return x;
 }
 
+/*!
+ * If the tree is not empty, returns the not null pointer to the root node.
+ * Otherwise, returns null pointer.
+ */
 template<typename KeyType>
 inline RBTreeNode<KeyType>* RedBlackTree<KeyType>::getRoot()
 {
