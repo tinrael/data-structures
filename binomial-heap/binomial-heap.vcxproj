@@ -150,6 +150,7 @@
     <ClCompile Include="binomial-heap.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="BinomialHeap.h" />
     <ClInclude Include="Node.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
